@@ -60,7 +60,7 @@ const AdminServiceList = () => {
   }
 
   return (
-    <div>
+    <div style={{ background: '#fff', minHeight: '100vh' }}>
       <div>
         <h1>Manage Services</h1>
         <Link to="/admin/services/new">

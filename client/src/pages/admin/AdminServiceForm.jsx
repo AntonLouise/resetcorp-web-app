@@ -129,7 +129,7 @@ const AdminServiceForm = () => {
   }
 
   return (
-    <div>
+    <div style={{ background: '#fff', minHeight: '100vh' }}>
       <div>
         <h1>{id ? 'Edit Service' : 'Create New Service'}</h1>
         <button 

@@ -221,13 +221,24 @@ const Navbar = () => {
       )}
       {/* Responsive styles */}
       <style>{`
-        @media (min-width: 900px) {
+        @media (min-width: 1500px) {
           .navbar-desktop { display: flex !important; }
           .navbar-mobile { display: none !important; }
         }
-        @media (max-width: 899px) {
+        @media (max-width: 1499px) {
           .navbar-desktop { display: none !important; }
           .navbar-mobile { display: flex !important; }
+        }
+        @media (min-width: 900px) and (max-width: 1499px) {
+          .navbar-desktop .nav-link {
+            gap: 1rem !important;
+            font-size: 0.95rem !important;
+            padding: 0.5rem 0.7rem 0.3rem 0.7rem !important;
+            min-width: 60px !important;
+          }
+          .navbar-desktop .nav-link:not(:last-child) {
+            margin-right: 16px !important;
+          }
         }
         .nav-link {
           position: relative;

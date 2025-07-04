@@ -50,16 +50,10 @@ const AdminUserForm = () => {
 
   return (
     <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
       minHeight: '100vh',
-      width: '100vw',
-      background: '#fff',
-      zIndex: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      background: 'linear-gradient(180deg, #b2f0e6 0%, #d0f7c6 70%)',
+      padding: '2rem',
+      fontFamily: 'Poppins, sans-serif'
     }}>
       <div style={styles.card}>
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -70,7 +64,7 @@ const AdminUserForm = () => {
               name="name"
               value={user.name}
               onChange={handleInputChange}
-              style={styles.nameInput}
+              style={{ ...styles.nameInput, background: '#fff' }}
             />
           </div>
           <div style={styles.inputGroup}>
@@ -80,7 +74,7 @@ const AdminUserForm = () => {
               name="email"
               value={user.email}
               onChange={handleInputChange}
-              style={styles.emailInput}
+              style={{ ...styles.emailInput, background: '#fff' }}
             />
           </div>
           <div style={styles.inputGroup}>
@@ -147,7 +141,6 @@ const styles = {
     color: '#2c3e50',
     border: '1px solid #e0e0e0',
     borderRadius: '8px',
-    background: '#ffffff',
     padding: '0.7rem 1rem',
     outline: 'none',
     boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
@@ -157,7 +150,6 @@ const styles = {
     color: '#2c3e50',
     border: '1px solid #e0e0e0',
     borderRadius: '8px',
-    background: '#ffffff',
     padding: '0.7rem 1rem',
     outline: 'none',
     boxShadow: '0 1px 2px rgba(0,0,0,0.03)',

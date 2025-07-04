@@ -863,11 +863,13 @@ const AdminProductForm = () => {
   };
 
   return (
-    <div style={{ 
+    <div style={{
+      background: '#fff',
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #b2f0e6 0%, #d0f7c6 70%)',
-      padding: '2rem',
-      fontFamily: 'Poppins, sans-serif'
+      width: '100vw',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
       <div className="product-form-container">
       <div className="form-header">

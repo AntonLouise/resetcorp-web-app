@@ -202,7 +202,7 @@ const AdminProductList = () => {
 const styles = {
   container: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+    background: '#fff',
     padding: '2rem',
     fontFamily: 'Poppins, sans-serif'
   },
