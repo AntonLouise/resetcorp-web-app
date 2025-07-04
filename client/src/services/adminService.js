@@ -64,6 +64,7 @@ export const getAllOrders = async () => {
 
 export const updateOrderStatus = async (orderId, status) => {
   const res = await api.put(`/orders/${orderId}/status`, { status });
+  api.clearCache('/orders/admin/all');
   return res.data;
 };
 
