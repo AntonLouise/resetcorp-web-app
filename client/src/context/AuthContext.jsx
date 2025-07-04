@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getProfile, updateProfile } from '../services/authService';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -42,6 +43,7 @@ export const AuthProvider = ({ children }) => {
     setToken(data.token);
     localStorage.setItem('token', data.token);
     setUser(data.user);
+    api.clearCache();
     
     console.log('Token stored in localStorage:', localStorage.getItem('token'));
   };
@@ -51,6 +53,7 @@ export const AuthProvider = ({ children }) => {
     setToken('');
     localStorage.removeItem('token');
     setUser(null);
+    api.clearCache();
   };
 
   const updateUserProfile = async (profileData) => {
