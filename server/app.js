@@ -54,6 +54,7 @@ const corsOptions = {
     
     const allowedOrigins = [
       'http://localhost:5173', // Development
+      'http://localhost:5174', // Added for Vite dev server
       'http://localhost:3000', // Alternative dev port
       process.env.CORS_ORIGIN, // Production frontend URL from environment
     ];
@@ -137,6 +138,7 @@ app.use('/uploads', (req, res, next) => {
   if (origin) {
     const allowedOrigins = [
       'http://localhost:5173',
+      'http://localhost:5174',
       'http://localhost:3000',
       process.env.CORS_ORIGIN,
     ];
