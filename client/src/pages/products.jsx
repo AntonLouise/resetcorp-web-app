@@ -154,6 +154,15 @@ const Product = () => {
     return item ? item.quantity : 0;
   };
 
+  const handleClearFilters = () => {
+    setSearch('');
+    setSelectedCategory('');
+    setMinPrice('');
+    setMaxPrice('');
+    setSortBy('name');
+    setSortOrder('asc');
+  };
+
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading products...</div>;
   if (error) return <div style={{ textAlign: 'center', padding: '40px' }}>Error: {error}</div>;
 
@@ -351,7 +360,7 @@ const Product = () => {
           </div>
 
           {showAdvanced && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
               <input 
                 type="number" 
                 placeholder="Min Price" 
@@ -436,51 +445,54 @@ const Product = () => {
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
               </select>
+              <button
+                onClick={handleClearFilters}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  background: '#f44336',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '1rem',
+                  transition: 'background 0.2s',
+                  height: '48px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onMouseEnter={e => e.target.style.background = '#d32f2f'}
+                onMouseLeave={e => e.target.style.background = '#f44336'}
+              >
+                Clear All Filters
+              </button>
             </div>
           )}
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-            {filteredProducts.map(product => (
-              <div key={product._id} className="product-card" style={{ background: '#fff', borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '300px', flex: '1 1 260px', boxSizing: 'border-box', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '370px' }}>
-                <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
-                <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
-                <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>
-                <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.description || 'No description available.'}</p>
-                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <button 
-                    onClick={() => navigate(`/product/${product._id}`)}
-                    style={{ 
-                      width: '100%',
-                      fontSize: '0.9rem',
-                      fontWeight: '600',
-                      padding: '0.6rem 1rem',
-                      background: '#000',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={e => {
-                      e.target.style.background = '#222';
-                      e.target.style.transform = 'translateY(-1px)';
-                    }}
-                    onMouseLeave={e => {
-                      e.target.style.background = '#000';
-                      e.target.style.transform = 'translateY(0)';
-                    }}
-                  >
-                    View Details
-                  </button>
-                  {user?.role !== 'admin' && (
+            {filteredProducts.length === 0 ? (
+              <div style={{ textAlign: 'center', width: '100%', padding: '2rem 0', color: '#888', fontSize: '1.2rem', fontWeight: 500 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: '#bbb', display: 'block', marginBottom: '0.5rem' }}>inventory_2</span>
+                No products available at the moment.
+              </div>
+            ) : (
+              filteredProducts.map(product => (
+                <div key={product._id} className="product-card" style={{ background: '#fff', borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '300px', flex: '1 1 260px', boxSizing: 'border-box', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '370px' }}>
+                  <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
+                  <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
+                  <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>
+                  <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.description || 'No description available.'}</p>
+                  <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <button 
-                      onClick={() => handleAddToCart(product)} 
+                      onClick={() => navigate(`/product/${product._id}`)}
                       style={{ 
                         width: '100%',
                         fontSize: '0.9rem',
                         fontWeight: '600',
                         padding: '0.6rem 1rem',
-                        background: '#28a745',
+                        background: '#000',
                         color: '#fff',
                         border: 'none',
                         borderRadius: '8px',
@@ -488,20 +500,47 @@ const Product = () => {
                         transition: 'all 0.2s'
                       }}
                       onMouseEnter={e => {
-                        e.target.style.background = '#218838';
+                        e.target.style.background = '#222';
                         e.target.style.transform = 'translateY(-1px)';
                       }}
                       onMouseLeave={e => {
-                        e.target.style.background = '#28a745';
+                        e.target.style.background = '#000';
                         e.target.style.transform = 'translateY(0)';
                       }}
                     >
-                      Add to Cart{getProductQuantity(product._id) > 0 ? ` (${getProductQuantity(product._id)})` : ''}
+                      View Details
                     </button>
-                  )}
+                    {user?.role !== 'admin' && (
+                      <button 
+                        onClick={() => handleAddToCart(product)} 
+                        style={{ 
+                          width: '100%',
+                          fontSize: '0.9rem',
+                          fontWeight: '600',
+                          padding: '0.6rem 1rem',
+                          background: '#28a745',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
+                        }}
+                        onMouseEnter={e => {
+                          e.target.style.background = '#218838';
+                          e.target.style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseLeave={e => {
+                          e.target.style.background = '#28a745';
+                          e.target.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        Add to Cart{getProductQuantity(product._id) > 0 ? ` (${getProductQuantity(product._id)})` : ''}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
