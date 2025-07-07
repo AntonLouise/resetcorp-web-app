@@ -262,6 +262,70 @@ const Login = () => {
             font-size: 1rem !important;
           }
         }
+
+        @media (max-width: 600px) {
+          .login-split-card {
+            flex-direction: column !important;
+            width: 90vw !important;
+            max-width: 340px !important;
+            min-height: 320px !important;
+            border-radius: 8px !important;
+          }
+          .login-split-card > div {
+            width: 100% !important;
+            padding: 10px 0 !important;
+          }
+          .login-split-card form {
+            gap: 10px !important;
+            padding: 0 2vw !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          .login-split-card form h2 {
+            font-size: 1.1rem !important;
+            margin-bottom: 8px !important;
+          }
+          .login-split-card form button,
+          .login-split-card form input[type="email"],
+          .login-split-card form input[type="password"] {
+            max-width: 95% !important;
+            margin: 0 auto 0 auto !important;
+            display: block !important;
+          }
+          .login-split-card form button {
+            font-size: 0.95rem !important;
+            padding: 8px 0 !important;
+            border-radius: 7px !important;
+          }
+          .login-split-card form input[type="email"],
+          .login-split-card form input[type="password"] {
+            font-size: 0.95rem !important;
+            padding: 7px 10px !important;
+            height: 32px !important;
+          }
+          label {
+            font-size: 0.85rem !important;
+          }
+          .material-symbols-outlined {
+            font-size: 1.1rem !important;
+          }
+          .login-split-card > div > div {
+            min-height: 100px !important;
+          }
+          .login-split-card > div > div > div {
+            font-size: 1.1rem !important;
+          }
+          .login-split-card > div > div > div + div {
+            font-size: 1.5rem !important;
+          }
+          .login-split-card form div {
+            gap: 5px !important;
+          }
+          .login-split-card form > div[style*="textAlign: center"] {
+            font-size: 0.9rem !important;
+            margin-top: 6px !important;
+          }
+        }
       `}</style>
     </div>
   );

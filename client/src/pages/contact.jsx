@@ -118,6 +118,53 @@ const Contact = () => {
           font-weight: 500;
         }
         .contact-card-phone-link:hover { color: #28a745; text-decoration: underline; }
+        @media (max-width: 600px) {
+          .contact-card {
+            max-width: 98vw !important;
+            border-radius: 14px !important;
+            padding: 0 !important;
+          }
+          .contact-header-bar {
+            padding: 14px 2vw 10px 2vw !important;
+            border-radius: 14px 14px 0 0 !important;
+          }
+          .contact-header-title {
+            font-size: 1.1rem !important;
+          }
+          .contact-header-sub {
+            font-size: 0.9rem !important;
+            margin-bottom: 12px !important;
+          }
+          .contact-header-btn {
+            font-size: 0.9rem !important;
+            padding: 8px 18px !important;
+            border-radius: 999px !important;
+          }
+          .contact-cards-row {
+            gap: 10px !important;
+            padding: 10px 2vw !important;
+          }
+          .contact-card-info {
+            border-radius: 10px !important;
+            min-height: 90px !important;
+            padding: 0.7rem 0.7rem !important;
+          }
+          .contact-card-icon {
+            font-size: 1.2rem !important;
+            margin-bottom: 8px !important;
+          }
+          .contact-card-title {
+            font-size: 0.95rem !important;
+            margin-bottom: 4px !important;
+          }
+          .contact-card-desc {
+            font-size: 0.8rem !important;
+          }
+          .contact-card-link, .contact-card-phone-link {
+            font-size: 0.8rem !important;
+            max-width: 120px !important;
+          }
+        }
       `}</style>
       <div className="contact-card">
         <div className="contact-header-bar">

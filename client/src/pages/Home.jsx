@@ -574,6 +574,12 @@ const Home = () => {
               max-width: 320px !important;
               height: auto !important;
             }
+            .homepage-section.home-section-modern {
+              padding-top: 44px !important;
+            }
+            #home.homepage-section.home-section-modern {
+              padding-top: 44px !important;
+            }
           }
           @media (min-width: 1800px) and (min-height: 1000px) {
             .homepage-section.home-section-modern {

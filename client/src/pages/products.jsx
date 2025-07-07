@@ -264,8 +264,63 @@ const Product = () => {
           0% { opacity: 0; top: 24px; }
           100% { opacity: 1; top: 0; }
         }
+        @media (max-width: 600px) {
+          .products-bg-main {
+            padding-top: 64px !important;
+          }
+          .product-card {
+            width: 48% !important;
+            flex-basis: 48% !important;
+            max-width: 48% !important;
+            min-width: 140px !important;
+            margin-bottom: 1vw !important;
+            min-height: 180px !important;
+            padding: 0.7rem !important;
+          }
+          .product-card h3 {
+            font-size: 0.95rem !important;
+          }
+          .product-card p {
+            font-size: 0.8rem !important;
+          }
+          .product-card .product-img {
+            max-height: 70px !important;
+          }
+          .product-card button {
+            font-size: 0.8rem !important;
+            padding: 0.4rem 0.5rem !important;
+          }
+          .hero-text h1 {
+            font-size: 1.2rem !important;
+          }
+          .hero-img img {
+            max-width: 120px !important;
+            max-height: 80px !important;
+          }
+          .hero-text span {
+            font-size: 1rem !important;
+            margin-bottom: 8px !important;
+          }
+          .filters-wrapper {
+            gap: 0.5rem !important;
+          }
+          .filters-wrapper select,
+          .filters-wrapper input,
+          .filters-wrapper button {
+            font-size: 0.85rem !important;
+            padding: 0.5rem 0.7rem !important;
+            min-width: 60px !important;
+            height: 32px !important;
+          }
+          /* Ensure flex container wraps and aligns for 2-column layout */
+          .products-bg-main > div > div[style*='display: flex'] {
+            flex-wrap: wrap !important;
+            gap: 2vw !important;
+            justify-content: flex-start !important;
+          }
+        }
       `}</style>
-      <div style={styles.bgGreen}>
+      <div style={styles.bgGreen} className="products-bg-main">
         <div style={{ ...styles.sectionContainer }}>
           <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
             <div style={{ position: 'relative', width: '100%' }}>
