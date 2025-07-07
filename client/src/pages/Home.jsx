@@ -317,7 +317,7 @@ const Home = () => {
           <img
             src={slide.image}
             alt="Product"
-            className={`featured-image-fade${fade ? ' exiting' : ''}`}
+            className={`featured-image-fade featured-product-img${fade ? ' exiting' : ''}`}
             style={{ width: 700, height: 420, display: 'block', margin: '0 auto', position: 'relative', zIndex: 1, background: 'none' }}
           />
           {/* Right arrow */}
@@ -372,8 +372,8 @@ const Home = () => {
                 maxWidth: 420,
                 textAlign: idx % 2 === 0 ? 'left' : 'right',
               }}>
-                <div style={{ fontWeight: 700, fontSize: 28, marginBottom: 18, letterSpacing: '-1px', color: '#111' }}>{desc.heading}</div>
-                <div style={{ fontSize: 18, color: '#222', lineHeight: 1.6 }}>{desc.text}</div>
+                <div className="featured-desc-heading" style={{ fontWeight: 700, fontSize: 28, marginBottom: 18, letterSpacing: '-1px', color: '#111' }}>{desc.heading}</div>
+                <div className="featured-desc-text" style={{ fontSize: 18, color: '#222', lineHeight: 1.6 }}>{desc.text}</div>
               </div>
             </div>
           ))}
@@ -385,13 +385,13 @@ const Home = () => {
         width: '100%',
         position: 'relative',
       }}>
-        <h2 style={{textAlign: 'center', color: '#111'}}>Our Services</h2>
+        <h2 className="services-section-heading" style={{textAlign: 'center', color: '#111'}}>Our Services</h2>
         <div className="services-flex">
           {defaultServices.map(service => (
             <div className="service-card" key={service._id}>
               <div className="service-icon material-symbols-outlined" style={{background:'#e0fbe8',color:'#28a745',borderRadius:'50%',padding:'16px',fontSize:'2.5rem',marginBottom:'1rem',display:'inline-flex',alignItems:'center',justifyContent:'center'}}>{service.materialIcon}</div>
-              <h3 style={{color:'#222',margin:'0.7rem 0 0.5rem 0',fontWeight:600,fontSize:'1.25rem',textAlign:'center'}}>{service.name}</h3>
-              <p style={{color:'#222',fontSize:'1rem',margin:'0 0 0.7rem 0',textAlign:'center'}}>{service.description}</p>
+              <h3 className="services-card-heading" style={{color:'#222',margin:'0.7rem 0 0.5rem 0',fontWeight:600,fontSize:'1.25rem',textAlign:'center'}}>{service.name}</h3>
+              <p className="services-card-desc" style={{color:'#222',fontSize:'1rem',margin:'0 0 0.7rem 0',textAlign:'center'}}>{service.description}</p>
               <div style={{flex:1}} />
               <button className="learn-more-btn" onClick={() => handleLearnMore(service)}>
                 Learn More
@@ -417,7 +417,7 @@ const Home = () => {
           }}>
             Ready to Get Started?
           </div>
-          <div style={{
+          <div className="services-cta-desc" style={{
             fontSize: '1.1rem',
             color: '#222',
             marginBottom: 24,
@@ -491,8 +491,8 @@ const Home = () => {
               textAlign: "center",
               padding: "0 1rem"
             }}>
-              <h2 style={{ fontSize: "2.3rem", fontWeight: 600, marginBottom: "1.2rem", marginTop: 0, color: "#fff" }}>Who We Are</h2>
-              <p style={{ fontSize: "1.1rem", color: "#fff", lineHeight: 1.6, margin: 0 }}>
+              <h2 className="about-section-heading" style={{ fontSize: "2.3rem", fontWeight: 600, marginBottom: "1.2rem", marginTop: 0, color: "#fff" }}>Who We Are</h2>
+              <p className="about-section-desc" style={{ fontSize: "1.1rem", color: "#fff", lineHeight: 1.6, margin: 0 }}>
                 The Collapsible Solar Power Station for farm irrigation uses renewable energy from the sun. It features solar panels that convert sunlight into electricity, providing a sustainable and eco-friendly source of energy for irrigating the farm.
               </p>
             </div>
@@ -550,6 +550,29 @@ const Home = () => {
           @media (max-width: 600px) {
             .featured-arrow-left, .featured-arrow-right {
               display: none !important;
+            }
+            .services-section-heading {
+              font-size: 1.2rem !important;
+            }
+            .services-card-heading {
+              font-size: 1rem !important;
+            }
+            .services-card-desc {
+              font-size: 0.85rem !important;
+            }
+            .services-cta-desc {
+              font-size: 0.85rem !important;
+            }
+            .about-section-heading {
+              font-size: 1.1rem !important;
+            }
+            .about-section-desc {
+              font-size: 0.85rem !important;
+            }
+            .featured-product-img {
+              width: 90vw !important;
+              max-width: 320px !important;
+              height: auto !important;
             }
           }
           @media (min-width: 1800px) and (min-height: 1000px) {
@@ -610,8 +633,8 @@ const Home = () => {
         }}>
           {/* Request a Quote */}
           <div>
-            <div style={{ color: '#666', fontSize: '0.95rem', marginBottom: '8px', fontWeight: 500 }}>Get a custom solution</div>
-            <div style={{ fontWeight: 700, fontSize: '2.2rem', marginBottom: '1.5rem', lineHeight: 1.2, color: '#2c3e50' }}>Request a Quote</div>
+            <div className="footer-section-heading" style={{ color: '#666', fontSize: '0.95rem', marginBottom: '8px', fontWeight: 500 }}>Get a custom solution</div>
+            <div className="footer-section-title" style={{ fontWeight: 700, fontSize: '2.2rem', marginBottom: '1.5rem', lineHeight: 1.2, color: '#2c3e50' }}>Request a Quote</div>
             <button 
               type="button" 
               onClick={() => setShowQuote(true)} 
@@ -645,7 +668,7 @@ const Home = () => {
 
           {/* Company */}
           <div>
-            <div style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Company</div>
+            <div className="footer-section-title" style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Company</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <a href="#about" onClick={e => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }} style={{ color: '#555', textDecoration: 'none', fontSize: '1rem', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseEnter={e => e.target.style.color = '#28a745'} onMouseLeave={e => e.target.style.color = '#555'}>About Us</a>
               <a href="#services" onClick={e => { e.preventDefault(); document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); }} style={{ color: '#555', textDecoration: 'none', fontSize: '1rem', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseEnter={e => e.target.style.color = '#28a745'} onMouseLeave={e => e.target.style.color = '#555'}>Services</a>
@@ -656,7 +679,7 @@ const Home = () => {
 
           {/* Contact Info with Icons */}
           <div>
-          <div style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Contact</div>
+          <div className="footer-section-title" style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Contact</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20 }}>mail</span>
               <a
@@ -680,7 +703,7 @@ const Home = () => {
 
           {/* Our Services (no descriptions) */}
           <div>
-            <div style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50', textAlign: 'left' }}>Our Services</div>
+            <div className="footer-section-title" style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50', textAlign: 'left' }}>Our Services</div>
             <ul style={{ paddingLeft: 18, color: '#333', fontSize: '1rem', margin: 0, listStyle: 'disc', textAlign: 'left' }}>
               <li>Sustainable Energy Solutions</li>
               <li>Fabrication and Installation</li>
@@ -696,7 +719,7 @@ const Home = () => {
           paddingTop: '2rem',
           borderTop: '1px solid #dee2e6',
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '1rem'
@@ -704,119 +727,13 @@ const Home = () => {
           <div style={{ 
             fontSize: '0.95rem', 
             color: '#666',
-            fontWeight: 500
-          }}>
+            fontWeight: 500,
+            textAlign: 'center',
+            width: '100%'
+          }}
+            className="footer-bottom-text"
+          >
             &copy; {new Date().getFullYear()} Collapsible Solar Solutions. All rights reserved.
-          </div>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <a 
-              href="#" 
-              style={{ 
-                background: '#28a745',
-                color: '#fff',
-                padding: '8px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-                width: '40px',
-                height: '40px'
-              }} 
-              aria-label="Facebook"
-              onMouseEnter={(e) => {
-                e.target.style.background = '#218838';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#28a745';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>public</span>
-            </a>
-            <a 
-              href="#" 
-              style={{ 
-                background: '#28a745',
-                color: '#fff',
-                padding: '8px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-                width: '40px',
-                height: '40px'
-              }} 
-              aria-label="Twitter"
-              onMouseEnter={(e) => {
-                e.target.style.background = '#218838';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#28a745';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>alternate_email</span>
-            </a>
-            <a 
-              href="#" 
-              style={{ 
-                background: '#28a745',
-                color: '#fff',
-                padding: '8px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-                width: '40px',
-                height: '40px'
-              }} 
-              aria-label="Instagram"
-              onMouseEnter={(e) => {
-                e.target.style.background = '#218838';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#28a745';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>photo_camera</span>
-            </a>
-            <a 
-              href="#" 
-              style={{ 
-                background: '#28a745',
-                color: '#fff',
-                padding: '8px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-                width: '40px',
-                height: '40px'
-              }} 
-              aria-label="LinkedIn"
-              onMouseEnter={(e) => {
-                e.target.style.background = '#218838';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#28a745';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>business_center</span>
-            </a>
           </div>
         </div>
       </footer>
@@ -1155,6 +1072,37 @@ const Home = () => {
           }
           .home-section-modern .nowrap-span {
             white-space: normal !important;
+          }
+          /* Featured Products section text size adjustments for small screens */
+          .featured-section-modern h2 {
+            font-size: 1.3rem !important;
+          }
+          .featured-section-modern > div[style*="color: #444"] {
+            font-size: 0.95rem !important;
+          }
+          .featured-section-modern div[style*="fontWeight: 700"][style*="fontSize: 28px"] {
+            font-size: 1.1rem !important;
+          }
+          .featured-section-modern div[style*="fontSize: 18px"] {
+            font-size: 0.95rem !important;
+          }
+          .featured-desc-heading {
+            font-size: 1.05rem !important;
+          }
+          .featured-desc-text {
+            font-size: 0.85rem !important;
+          }
+          .footer-section-heading {
+            font-size: 0.8rem !important;
+          }
+          .footer-section-title {
+            font-size: 0.95rem !important;
+          }
+          footer ul, footer a, footer span, footer div[style*='fontSize: 0.95rem'] {
+            font-size: 0.75rem !important;
+          }
+          .footer-bottom-text {
+            font-size: 0.65rem !important;
           }
         }
         @media (max-width: 450px) {
