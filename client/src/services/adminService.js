@@ -7,6 +7,7 @@ export const getAllProducts = async () => {
 
 export const createProduct = async (productData) => {
   const res = await api.post('/products', productData);
+  api.clearCache('/products');
   return res.data;
 };
 
@@ -19,6 +20,7 @@ export const updateProduct = async (productId, productData) => {
   
   try {
     const res = await api.put(`/products/${productId}`, productData);
+    api.clearCache('/products');
     console.log('=== FRONTEND: REQUEST SUCCESSFUL ===');
     console.log('Response status:', res.status);
     console.log('Response data:', res.data);
@@ -34,6 +36,7 @@ export const updateProduct = async (productId, productData) => {
 
 export const deleteProduct = async (productId) => {
   const res = await api.delete(`/products/${productId}`);
+  api.clearCache('/products');
   return res.data;
 };
 
@@ -81,10 +84,12 @@ export const getUserById = async (userId) => {
 
 export const updateUser = async (userId, userData) => {
   const res = await api.put(`/admin/users/${userId}`, userData);
+  api.clearCache('/admin/users');
   return res.data;
 };
 
 export const deleteUser = async (userId) => {
   const res = await api.delete(`/admin/users/${userId}`);
+  api.clearCache('/admin/users');
   return res.data;
 }; 
