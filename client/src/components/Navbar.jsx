@@ -302,13 +302,45 @@ const Navbar = () => {
           color: #28a745 !important;
         }
         @media (max-width: 600px) {
-          .navbar-desktop {
-            display: none !important;
+          nav {
+            background: #fff !important;
+            box-shadow: 0 1px 3px rgba(40,167,69,0.10) !important;
+            border-bottom: 1px solid #e0e0e0 !important;
           }
-        }
-        @media (min-width: 601px) {
+          nav, .navbar-desktop, .navbar-mobile {
+            min-height: 44px !important;
+            height: 44px !important;
+          }
+          .navbar-desktop > div,
           .navbar-mobile {
-            display: none !important;
+            min-height: 44px !important;
+            height: 44px !important;
+          }
+          .nav-link {
+            font-size: 0.85rem !important;
+            padding: 0.2rem 0.7rem !important;
+          }
+          .navbar-mobile {
+            padding: 0 0.5rem !important;
+          }
+          .navbar-mobile span[style*='fontWeight: bold'] {
+            margin-right: 0.2rem !important;
+          }
+          .navbar-desktop span[style*='fontWeight: bold'] {
+            font-size: 1rem !important;
+          }
+          .navbar-desktop button,
+          .navbar-mobile button {
+            min-width: 32px !important;
+            height: 32px !important;
+            font-size: 0.95rem !important;
+            padding: 0.2rem 0.7rem !important;
+          }
+          .material-symbols-outlined {
+            font-size: 1.1rem !important;
+          }
+          .navbar-mobile button[aria-label="Open navigation menu"] {
+            margin-left: 0.2rem !important;
           }
         }
       `}</style>

@@ -89,6 +89,29 @@ const AdminOrderList = () => {
 
   return (
     <div style={styles.container}>
+      <style>{`
+        @media (max-width: 600px) {
+          .admin-orders-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+            justify-items: center !important;
+            align-items: center !important;
+            width: 100vw !important;
+            margin: 0 auto !important;
+          }
+          .admin-order-card {
+            width: 92vw !important;
+            max-width: 300px !important;
+            min-width: 0 !important;
+            padding: 1rem !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+        }
+      `}</style>
       {/* Header */}
       <div style={styles.headerCentered}>
         <h1 style={styles.title}>{'Order Management'}</h1>
@@ -102,9 +125,9 @@ const AdminOrderList = () => {
         </div>
       </div>
       {/* Orders Grid */}
-      <div style={styles.ordersGrid}>
+      <div style={styles.ordersGrid} className="admin-orders-grid">
         {orders.map(order => (
-          <div key={order._id} style={styles.orderCard}>
+          <div key={order._id} style={styles.orderCard} className="admin-order-card">
             <div style={styles.orderHeader}>
               <div style={styles.orderId}>
                 <span style={styles.orderIdLabel}>Order #</span>
