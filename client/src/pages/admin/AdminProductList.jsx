@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { getAllProducts, deleteProduct } from '../../services/adminService';
 
 // Inject hover effect styles
@@ -39,10 +39,11 @@ const AdminProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [location]);
 
   const fetchProducts = async () => {
     setLoading(true);

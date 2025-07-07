@@ -108,6 +108,16 @@ const Contact = () => {
           max-width: 220px;
         }
         .contact-card-link:hover { color: #28a745; text-decoration: underline; }
+        .contact-card-phone-link {
+          color: #111;
+          text-decoration: none;
+          transition: color 0.2s, text-decoration 0.2s;
+          cursor: pointer;
+          font-size: 0.98rem;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+        }
+        .contact-card-phone-link:hover { color: #28a745; text-decoration: underline; }
       `}</style>
       <div className="contact-card">
         <div className="contact-header-bar">
@@ -120,16 +130,38 @@ const Contact = () => {
           </div>
         </div>
         <div className="contact-cards-row">
-          <div className="contact-card-info">
-            <FaEnvelope className="contact-card-icon" />
-            <div className="contact-card-title">Email:</div>
-            <a href="mailto:info@resetcorm.com" className="contact-card-link">Info@resetcorm.com</a>
-          </div>
-          <div className="contact-card-info">
-            <FaPhone className="contact-card-icon" />
-            <div className="contact-card-title">Phone:</div>
-            <div className="contact-card-desc">+1(555)123–456<br />+1(555)987–654</div>
-          </div>
+        <div className="contact-card-info">
+        <FaEnvelope className="contact-card-icon" />
+<div className="contact-card-title">Email:</div>
+<a
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=collapsiblesolar@gmail.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="contact-card-link"
+  style={{ fontWeight: 'normal', fontSize: '0.9rem' }}
+>
+  collapsiblesolar@gmail.com
+</a>
+</div>
+<div className="contact-card-info">
+  <FaPhone className="contact-card-icon" />
+  <div className="contact-card-title">Phone:</div>
+  <div className="contact-card-desc">
+    <a
+      href="tel:+1555123456"
+      className="contact-card-phone-link"
+    >
+      +1 (555) 123–456
+    </a>
+    <br />
+    <a
+      href="tel:+1555987654"
+      className="contact-card-phone-link"
+    >
+      +1 (555) 987–654
+    </a>
+  </div>
+</div>
           <div className="contact-card-info">
             <FaMapMarkerAlt className="contact-card-icon" />
             <div className="contact-card-title">Address:</div>

@@ -656,10 +656,17 @@ const Home = () => {
 
           {/* Contact Info with Icons */}
           <div>
-            <div style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Contact</div>
+          <div style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 12, color: '#2c3e50' }}>Contact</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20 }}>mail</span>
-              <a href="mailto:info@resetcorp.com" style={{ color: '#28a745', textDecoration: 'none', fontWeight: 500 }}>info@resetcorp.com</a>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=collapsiblesolar@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#28a745', textDecoration: 'none', fontWeight: 500 }}
+              >
+                collapsiblesolar@gmail.com
+              </a>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20 }}>call</span>
