@@ -51,19 +51,19 @@ const defaultServices = [
 
 const featuredSlides = [
   {
-    title: 'Collapsible Solar Power Station (V1)',
+    title: 'Collapsible Solar Power Station',
     subtitle: 'Efficient, portable, and sustainable energy for your needs.',
     image: '/removed bg product 1.png',
     cards: [],
   },
   {
-    title: 'Collapsible Solar Power Station (V2)',
+    title: 'Collapsible Solar Power Station',
     subtitle: 'Reliable solar solutions for every environment.',
     image: '/removed bg product 2.png',
     cards: [],
   },
   {
-    title: 'Collapsible Solar Power Station (V3)',
+    title: 'Collapsible Solar Power Station',
     subtitle: 'Innovative design for modern energy challenges.',
     image: '/removed bg product 3.png',
     cards: [],
@@ -565,7 +565,7 @@ const Home = () => {
             }}>
               <h2 className="about-section-heading" style={{ fontSize: "2.3rem", fontWeight: 600, marginBottom: "1.2rem", marginTop: 0, color: "#fff" }}>Who We Are</h2>
               <p className="about-section-desc" style={{ fontSize: "1.1rem", color: "#fff", lineHeight: 1.6, margin: 0 }}>
-                The Collapsible Solar Power Station for farm irrigation uses renewable energy from the sun. It features solar panels that convert sunlight into electricity, providing a sustainable and eco-friendly source of energy for irrigating the farm.
+              RESET Corp pioneers portable solar solutions that power farms and remote communities. Driven by a mission to make clean energy simple, affordable, and within reach, we help build resilient, sustainable livelihoods wherever the sun shines.
               </p>
             </div>
           </div>
