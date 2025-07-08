@@ -56,6 +56,7 @@ const corsOptions = {
       'http://localhost:5173', // Development
       'http://localhost:5174', // Added for Vite dev server
       'http://localhost:3000', // Alternative dev port
+      'https://resetcorp.vercel.app', // Production Vercel domain
       process.env.CORS_ORIGIN, // Production frontend URL from environment
     ];
     
@@ -68,6 +69,12 @@ const corsOptions = {
     // Check Vercel domains with more permissive regex
     if (origin.includes('.vercel.app')) {
       console.log('Origin is a Vercel domain, allowing');
+      return callback(null, true);
+    }
+    
+    // Explicitly allow your specific Vercel domain
+    if (origin === 'https://resetcorp.vercel.app') {
+      console.log('Origin is resetcorp.vercel.app, allowing');
       return callback(null, true);
     }
     
@@ -131,6 +138,11 @@ const profileRoutes = require('./routes/profile');
 app.use('/api/profile', profileRoutes);
 console.log('Profile routes registered!');
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Serve static files with enhanced security headers
 app.use('/uploads', (req, res, next) => {
   const origin = req.headers.origin;
@@ -140,6 +152,7 @@ app.use('/uploads', (req, res, next) => {
       'http://localhost:5173',
       'http://localhost:5174',
       'http://localhost:3000',
+      'https://resetcorp.vercel.app',
       process.env.CORS_ORIGIN,
     ];
     
@@ -149,6 +162,10 @@ app.use('/uploads', (req, res, next) => {
     }
     // Check Vercel domains
     else if (origin.includes('.vercel.app')) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
+    // Explicitly allow your specific Vercel domain
+    else if (origin === 'https://resetcorp.vercel.app') {
       res.header('Access-Control-Allow-Origin', origin);
     }
     // Check Netlify domains
