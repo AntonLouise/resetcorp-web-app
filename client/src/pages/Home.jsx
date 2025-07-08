@@ -81,6 +81,33 @@ const Home = () => {
   const [fade, setFade] = useState(false);
   const fadeTimeout = useRef();
   const slide = featuredSlides[currentSlide];
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+
+  // Only enable swipe when navbar is in hamburger mode (<=1499px)
+  const isTouchEnabled = typeof window !== 'undefined' && window.innerWidth <= 1499;
+
+  const handleTouchStart = (e) => {
+    if (!isTouchEnabled) return;
+    setTouchStartX(e.touches[0].clientX);
+  };
+  const handleTouchMove = (e) => {
+    if (!isTouchEnabled) return;
+    setTouchEndX(e.touches[0].clientX);
+  };
+  const handleTouchEnd = () => {
+    if (!isTouchEnabled || touchStartX === null || touchEndX === null) return;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        handleNext(); // swipe left
+      } else {
+        handlePrev(); // swipe right
+      }
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
 
   const handleLearnMore = (service) => {
     setSelectedService(service);
@@ -321,6 +348,9 @@ const Home = () => {
       alignItems: 'center',
       justifyContent: 'center',
     }}
+    onTouchStart={handleTouchStart}
+    onTouchMove={handleTouchMove}
+    onTouchEnd={handleTouchEnd}
   >
     <div className="featured-arrow-left" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
       <button onClick={handlePrev} aria-label="Previous" style={{
