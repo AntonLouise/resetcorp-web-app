@@ -268,117 +268,159 @@ const Home = () => {
       </section>
 
       {/* Featured Products Section */}
-      <section id="featured" className="homepage-section featured-section-modern" style={{
-        minHeight: '100vh',
-        width: '100%',
-        background: 'linear-gradient(180deg, #b2f0e6 0%, #d0f7c6 70%, #fff 100%)',
+      <section
+  id="featured"
+  className="homepage-section featured-section-modern"
+  style={{
+    minHeight: '100vh',
+    width: '100%',
+    background: 'linear-gradient(180deg, #b2f0e6 0%, #d0f7c6 70%, #fff 100%)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '8rem 1rem 3rem 1rem',
+  }}
+>
+  <h2
+    style={{
+      fontSize: '2.8rem',
+      fontWeight: 700,
+      color: '#111',
+      marginBottom: 8,
+      textAlign: 'center',
+      letterSpacing: '-1px',
+      textShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    }}
+  >
+    {slide.title}
+  </h2>
+  <div
+    style={{
+      fontSize: '1.1rem',
+      color: '#444',
+      marginBottom: 24,
+      textAlign: 'center',
+      fontWeight: 400,
+      paddingBottom: 16,
+    }}
+  >
+    {slide.subtitle}
+  </div>
+
+  {/* Carousel */}
+  <div
+    style={{
+      position: 'relative',
+      width: '90vw',
+      maxWidth: 1200,
+      height: 520,
+      margin: '0 auto',
+      marginBottom: 48,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <div className="featured-arrow-left" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+      <button onClick={handlePrev} aria-label="Previous" style={{
+        background: 'none',
+        border: 'none',
+        fontSize: 56,
+        color: '#222',
+        cursor: 'pointer',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        padding: '8rem 1rem 3rem 1rem',
+        justifyContent: 'center'
       }}>
-        <h2 style={{ fontSize: '2.8rem', fontWeight: 700, color: '#111', marginBottom: 8, textAlign: 'center', letterSpacing: '-1px', textShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>{slide.title}</h2>
-        <div style={{ fontSize: '1.1rem', color: '#444', marginBottom: 24, textAlign: 'center', fontWeight: 400, paddingBottom: 16 }}>{slide.subtitle}</div>
-        <div
-          style={{ position: 'relative', width: '90vw', maxWidth: 1200, height: 520, margin: '0 auto', marginBottom: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          onTouchStart={e => {
-            if (e.touches && e.touches.length === 1) {
-              window._swipeStartX = e.touches[0].clientX;
-            }
-          }}
-          onTouchEnd={e => {
-            if (typeof window._swipeStartX === 'number' && e.changedTouches && e.changedTouches.length === 1) {
-              const deltaX = e.changedTouches[0].clientX - window._swipeStartX;
-              if (Math.abs(deltaX) > 50) {
-                if (deltaX < 0) handleNext();
-                else handlePrev();
-              }
-              window._swipeStartX = undefined;
-            }
-          }}
-        >
-          {/* Left arrow */}
-          <div className="featured-arrow-left" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
-            <button onClick={handlePrev} aria-label="Previous" style={{
-              background: 'none',
-              border: 'none',
-              fontSize: 56,
-              color: '#222',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-            <span className="material-symbols-outlined" style={{ fontSize: 56 }}>chevron_left</span>
-          </button>
-          </div>
-          {/* Product image (transparent PNG, no shadow/container) */}
-          <img
-            src={slide.image}
-            alt="Product"
-            className={`featured-image-fade featured-product-img${fade ? ' exiting' : ''}`}
-            style={{ width: 700, height: 420, display: 'block', margin: '0 auto', position: 'relative', zIndex: 1, background: 'none' }}
-          />
-          {/* Right arrow */}
-          <div className="featured-arrow-right" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
-            <button onClick={handleNext} aria-label="Next" style={{
-              background: 'none',
-              border: 'none',
-              fontSize: 56,
-              color: '#222',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-            <span className="material-symbols-outlined" style={{ fontSize: 56 }}>chevron_right</span>
-          </button>
-          </div>
-          {/* Dots indicator */}
-          <div className="dots-indicator featured-section-modern dots-indicator" style={{ position: 'absolute', left: 0, right: 0, bottom: -32 }}>
-            {featuredSlides.map((_, i) => (
-              <span key={i} className={`dot${i === currentSlide ? ' active' : ''}`}></span>
-            ))}
-          </div>
+        <span className="material-symbols-outlined" style={{ fontSize: 56 }}>chevron_left</span>
+      </button>
+    </div>
+    <img
+      src={slide.image}
+      alt="Product"
+      className={`featured-image-fade featured-product-img${fade ? ' exiting' : ''}`}
+      style={{ width: 700, height: 420, display: 'block', margin: '0 auto', position: 'relative', zIndex: 1 }}
+    />
+    <div className="featured-arrow-right" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+      <button onClick={handleNext} aria-label="Next" style={{
+        background: 'none',
+        border: 'none',
+        fontSize: 56,
+        color: '#222',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 56 }}>chevron_right</span>
+      </button>
+    </div>
+    <div className="dots-indicator featured-section-modern dots-indicator" style={{ position: 'absolute', left: 0, right: 0, bottom: -32 }}>
+      {featuredSlides.map((_, i) => (
+        <span key={i} className={`dot${i === currentSlide ? ' active' : ''}`}></span>
+      ))}
+    </div>
+  </div>
+
+  {/* New Better Featured Descriptions */}
+  <div style={{
+  background: 'rgba(40,40,40,0.08)',
+  borderRadius: 32,
+  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+  padding: '3.5rem 3vw',
+  maxWidth: 900,
+  width: '100%',
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 48,
+}}>
+  {[
+    {
+      heading: 'What is Collapsible?',
+      tagline: 'Portable, Smart, Sustainable.',
+      text: 'It’s a foldable solar power station that turns sunlight into electricity. Easy to move, quick to set up, perfect for powering farms, ponds, or off-grid sites.'
+    },
+    {
+      heading: 'Why Choose Collapsible?',
+      tagline: 'More power. Less cost. Total freedom.',
+      text: 'Save on fuel, cut your electric bills, and keep your farm running even during blackouts. Designed for remote use, it’s energy you control.'
+    },
+    {
+      heading: 'How to Use Collapsible?',
+      tagline: 'Unfold. Aim. Power up.',
+      text: 'Simply unfold the panels, point them toward the sun, and connect your devices or pumps. In minutes, you’re harvesting solar energy with no technical hassle.'
+    },
+  ].map((desc, idx) => (
+    <div key={idx}
+      style={{
+        display: 'flex',
+        justifyContent: idx % 2 === 0 ? 'flex-start' : 'flex-end',
+        width: '100%',
+      }}
+    >
+      <div style={{
+        maxWidth: 420,
+        textAlign: idx % 2 === 0 ? 'left' : 'right',
+      }}>
+        <div className="featured-desc-heading"
+          style={{ fontWeight: 700, fontSize: 28, marginBottom: 6, letterSpacing: '-1px', color: '#111' }}>
+          {desc.heading}
         </div>
-        {/* Description Section */}
-        <div style={{
-          background: 'rgba(40,40,40,0.08)',
-          borderRadius: 32,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-          padding: '3.5rem 3vw',
-          maxWidth: 900,
-          width: '100%',
-          margin: '0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 48,
-        }}>
-          {[
-            { heading: 'What is Collapsible?', text: 'The Collapsible Solar Power Station for farm irrigation uses renewable energy from the sun. It features solar panels that convert sunlight into electricity, providing a sustainable and eco-friendly source of energy for irrigating the farm.' },
-            { heading: 'Why Choose Collapsible?', text: 'The Collapsible Solar Power Station for farm irrigation uses renewable energy from the sun. It features solar panels that convert sunlight into electricity, providing a sustainable and eco-friendly source of energy for irrigating the farm.' },
-            { heading: 'What is Collapsible?', text: 'The Collapsible Solar Power Station for farm irrigation uses renewable energy from the sun. It features solar panels that convert sunlight into electricity, providing a sustainable and eco-friendly source of energy for irrigating the farm.' },
-          ].map((desc, idx) => (
-            <div
-              key={idx}
-              style={{
-                display: 'flex',
-                justifyContent: idx % 2 === 0 ? 'flex-start' : 'flex-end',
-                width: '100%',
-              }}
-            >
-              <div style={{
-                maxWidth: 420,
-                textAlign: idx % 2 === 0 ? 'left' : 'right',
-              }}>
-                <div className="featured-desc-heading" style={{ fontWeight: 700, fontSize: 28, marginBottom: 18, letterSpacing: '-1px', color: '#111' }}>{desc.heading}</div>
-                <div className="featured-desc-text" style={{ fontSize: 18, color: '#222', lineHeight: 1.6 }}>{desc.text}</div>
-              </div>
-            </div>
-          ))}
+        <div style={{ fontSize: 16, fontWeight: 500, color: '#2a7f62', marginBottom: 14 }}>
+          {desc.tagline}
         </div>
-      </section>
+        <div className="featured-desc-text" style={{ fontSize: 18, color: '#222', lineHeight: 1.6 }}>
+          {desc.text}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+</section>
+
 
       <section id="services" className="homepage-section services-section" style={{
         background: '#fff',
