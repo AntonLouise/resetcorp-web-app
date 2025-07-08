@@ -102,7 +102,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#fff', color: '#222', zIndex: 1000, borderBottom: '1px solid #ddd', height: 64, minHeight: 64, maxHeight: 64, boxShadow: '0 2px 8px rgba(40,167,69,0.13)' }}>
+    <nav style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#fff', color: '#222', zIndex: 1000, borderBottom: '1px solid #ddd', height: 64, minHeight: 64, maxHeight: 64, boxShadow: '0 2px 8px rgba(40,167,69,0.13)', overflow: 'hidden' }}>
       {/* Desktop/Tablet Navbar */}
       <div className="navbar-desktop" style={{ display: 'flex', height: 64, minHeight: 64, maxHeight: 64, width: '100%' }}>
         <div style={{
@@ -310,13 +310,13 @@ const Navbar = () => {
             border-bottom: 1px solid #e0e0e0 !important;
           }
           nav, .navbar-desktop, .navbar-mobile {
-            min-height: 44px !important;
-            height: 44px !important;
+            min-height: 64px !important;
+            height: 64px !important;
           }
           .navbar-desktop > div,
           .navbar-mobile {
-            min-height: 44px !important;
-            height: 44px !important;
+            min-height: 64px !important;
+            height: 64px !important;
           }
           .nav-link {
             font-size: 0.85rem !important;
@@ -341,8 +341,9 @@ const Navbar = () => {
           .material-symbols-outlined {
             font-size: 1.1rem !important;
           }
-          .navbar-mobile button[aria-label="Open navigation menu"] {
-            margin-left: 0.2rem !important;
+          /* Keep menu icon large on all screens */
+          .navbar-mobile button[aria-label="Open navigation menu"] .material-symbols-outlined {
+            font-size: 2rem !important;
           }
         }
       `}</style>
