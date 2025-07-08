@@ -102,30 +102,32 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#fff', color: '#222', zIndex: 1000, borderBottom: '1px solid #ddd', minHeight: 64, boxShadow: '0 2px 8px rgba(40,167,69,0.13)' }}>
+    <nav style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#fff', color: '#222', zIndex: 1000, borderBottom: '1px solid #ddd', height: 64, minHeight: 64, maxHeight: 64, boxShadow: '0 2px 8px rgba(40,167,69,0.13)' }}>
       {/* Desktop/Tablet Navbar */}
-      <div className="navbar-desktop" style={{ display: 'flex', minHeight: 64, width: '100%' }}>
+      <div className="navbar-desktop" style={{ display: 'flex', height: 64, minHeight: 64, maxHeight: 64, width: '100%' }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
           height: 64,
+          minHeight: 64,
+          maxHeight: 64,
           position: 'relative',
         }}>
           {/* Left links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flex: 1, justifyContent: 'flex-start' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flex: 1, justifyContent: 'flex-start', height: 64 }}>
             <button className={`nav-link${(location.pathname === '/' && activeSection === 'home') ? ' active' : ''}`} onClick={() => handleScrollNav('home')}>Home</button>
             <button className={`nav-link${(location.pathname === '/' && activeSection === 'services') ? ' active' : ''}`} onClick={() => handleScrollNav('services')}>Services</button>
             <button className={`nav-link${(location.pathname === '/' && activeSection === 'about') ? ' active' : ''}`} onClick={() => handleScrollNav('about')}>About Us</button>
             <button className={`nav-link${location.pathname === '/products' ? ' active' : ''}`} onClick={() => handleRoute('/products')}>Products</button>
           </div>
           {/* Centered brand/logo */}
-          <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '1.3rem', letterSpacing: 1, background: '#fff', padding: '0 1rem', pointerEvents: 'auto' }}>RESET CORP.</span>
+          <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 64, minHeight: 64, maxHeight: 64, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '1.3rem', letterSpacing: 1, background: '#fff', padding: '0 1rem', pointerEvents: 'auto', height: 64, display: 'flex', alignItems: 'center' }}>RESET CORP.</span>
           </div>
           {/* Right links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flex: 1, justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flex: 1, justifyContent: 'flex-end', height: 64 }}>
             <button className={`nav-link${location.pathname === '/contact' ? ' active' : ''}`} onClick={() => handleRoute('/contact')}>Contacts</button>
             {user ? (
               <>
@@ -133,10 +135,10 @@ const Navbar = () => {
                   <button className={`nav-link${location.pathname === '/admin' ? ' active' : ''}`} onClick={() => handleRoute('/admin')}>Dashboard</button>
                 )}
                 <button className={`nav-link${location.pathname === '/profile' ? ' active' : ''}`} onClick={() => handleRoute('/profile')}>Profile</button>
-                <button onClick={handleLogout} style={{ background: '#f44336', color: '#fff', border: 'none', borderRadius: '1.5rem', padding: '0.5rem 1.5rem', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', minWidth: 80 }}>Logout</button>
+                <button onClick={handleLogout} style={{ background: '#f44336', color: '#fff', border: 'none', borderRadius: '1.5rem', padding: '0.5rem 1.5rem', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', minWidth: 80, height: 40 }}>Logout</button>
               </>
             ) : (
-              <button onClick={() => handleRoute('/login')} style={{ background: '#000', color: '#fff', border: 'none', borderRadius: '1.5rem', padding: '0.5rem 1.5rem', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', minWidth: 80 }}>Login</button>
+              <button onClick={() => handleRoute('/login')} style={{ background: '#000', color: '#fff', border: 'none', borderRadius: '1.5rem', padding: '0.5rem 1.5rem', fontWeight: 500, cursor: 'pointer', fontSize: '1rem', minWidth: 80, height: 40 }}>Login</button>
             )}
             <button onClick={() => handleRoute('/cart')} style={{ background: 'none', border: 'none', color: '#222', fontSize: '1.5rem', position: 'relative', cursor: 'pointer', minWidth: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '1.6rem', verticalAlign: 'middle' }}>shopping_cart</span>
@@ -150,8 +152,8 @@ const Navbar = () => {
         </div>
       </div>
       {/* Mobile Navbar */}
-      <div className="navbar-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1rem', minHeight: 64, width: '100%' }}>
-        <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>RESET CORP.</span>
+      <div className="navbar-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1rem', height: 64, minHeight: 64, maxHeight: 64, width: '100%' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', height: 64, display: 'flex', alignItems: 'center' }}>RESET CORP.</span>
         <button
           aria-label="Open navigation menu"
           onClick={() => setDrawerOpen(true)}
