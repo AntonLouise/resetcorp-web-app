@@ -240,7 +240,18 @@ const Checkout = () => {
                 onFocus={e => e.target.style.borderColor = '#28a745'}
                 onBlur={e => e.target.style.borderColor = '#b7eac7'}
               >
-                <option value="Batangas">Batangas</option>
+                <option value="Ilocos Region">Ilocos Region</option>
+                <option value="Cagayan Valley">Cagayan Valley</option>
+                <option value="Central Luzon">Central Luzon</option>
+                <option value="CALABARZON">CALABARZON</option>
+                <option value="MIMAROPA">MIMAROPA</option>
+                <option value="Bicol Region">Bicol Region</option>
+                <option value="Western Visayas">Western Visayas</option>
+                <option value="Central Visayas">Central Visayas</option>
+                <option value="Eastern Visayas">Eastern Visayas</option>
+                <option value="Zamboanga Peninsula">Zamboanga Peninsula</option>
+                <option value="Northern Mindanao">Northern Mindanao</option>
+                <option value="Davao Region">Davao Region</option>
               </select>
               
               <input 
