@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { getProductById } from '../services/productService';
+import { toast } from 'react-toastify';
 
 // Add hover effects styles
 if (typeof document !== 'undefined' && !document.getElementById('product-detail-hover-effects')) {
@@ -107,7 +108,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!user) {
-      alert('Please log in to add items to your cart.');
+      toast.error('Please log in to add items to your cart.');
       navigate('/login');
       return;
     }

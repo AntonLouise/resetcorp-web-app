@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { login } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const { login: loginUser } = useAuth();
@@ -17,7 +18,7 @@ const Login = () => {
     try {
       const data = await login(form);
       loginUser(data);
-      alert('Login successful');
+      toast.success('Login successful');
       navigate('/'); // Redirect to home page after successful login
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

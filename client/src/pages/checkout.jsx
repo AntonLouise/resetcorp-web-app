@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { createOrder } from '../services/orderService';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 if (typeof document !== 'undefined' && !document.getElementById('checkout-hover-effects')) {
   const style = document.createElement('style');
@@ -90,7 +91,7 @@ const Checkout = () => {
       
       const newOrder = await createOrder(orderData);
       await loadCart();
-      alert('Order placed successfully! You will be redirected to your cart.');
+      toast.success('Order placed successfully! You will be redirected to your cart.');
       console.log('DEBUG: Navigating to /cart after order creation');
       navigate(`/cart`);
 

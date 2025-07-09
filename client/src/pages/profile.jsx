@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { getMyOrders, cancelOrder } from '../services/orderService';
+import { toast } from 'react-toastify';
 
 const styles = {
   bgGreen: {
@@ -225,7 +226,7 @@ const Profile = () => {
       await cancelOrder(orderId);
       setOrders(orders => orders.map(o => o._id === orderId ? { ...o, status: 'cancelled' } : o));
     } catch (err) {
-      alert('Failed to cancel order.');
+      toast.error('Failed to cancel order.');
     } finally {
       setCancelingOrderId(null);
     }

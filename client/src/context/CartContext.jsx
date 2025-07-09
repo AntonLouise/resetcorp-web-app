@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import cartService from '../services/cartService';
+import { toast } from 'react-toastify';
 
 const CartContext = createContext();
 
@@ -38,7 +39,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     if (!user || !token) {
       // For non-authenticated users, show login prompt
-      alert('Please log in to add items to cart');
+      toast.error('Please log in to add items to cart');
       return;
     }
 
@@ -48,7 +49,7 @@ export const CartProvider = ({ children }) => {
       setCart(updatedCart);
     } catch (error) {
       console.error('Error adding to cart:', error);
-      alert(error.message || 'Failed to add item to cart');
+      toast.error(error.message || 'Failed to add item to cart');
     } finally {
       setLoading(false);
     }
@@ -63,7 +64,7 @@ export const CartProvider = ({ children }) => {
       setCart(updatedCart);
     } catch (error) {
       console.error('Error updating cart:', error);
-      alert(error.message || 'Failed to update cart');
+      toast.error(error.message || 'Failed to update cart');
     } finally {
       setLoading(false);
     }
@@ -78,7 +79,7 @@ export const CartProvider = ({ children }) => {
       setCart(updatedCart);
     } catch (error) {
       console.error('Error removing from cart:', error);
-      alert(error.message || 'Failed to remove item from cart');
+      toast.error(error.message || 'Failed to remove item from cart');
     } finally {
       setLoading(false);
     }
@@ -93,7 +94,7 @@ export const CartProvider = ({ children }) => {
       setCart(updatedCart);
     } catch (error) {
       console.error('Error clearing cart:', error);
-      alert(error.message || 'Failed to clear cart');
+      toast.error(error.message || 'Failed to clear cart');
     } finally {
       setLoading(false);
     }

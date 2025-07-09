@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { register } from '../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -50,7 +51,7 @@ const Register = () => {
     try {
       await register({ name: form.name, email: form.email, password: form.password });
       setSuccess(true);
-      alert('Registration successful! Please log in.');
+      toast.success('Registration successful! Please log in.');
       navigate('/login');
     } catch (err) {
       console.error('Registration error:', err);

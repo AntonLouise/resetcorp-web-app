@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { getProducts } from '../services/productService';
 import { getCategories } from '../services/categoryService';
 import solarBanner from '../assets/solar.png';
+import { toast } from 'react-toastify';
 
 const BACKEND_URL = 'http://localhost:5000/';
 
@@ -136,7 +137,10 @@ const Product = () => {
   }, [products, selectedCategory, search, minPrice, maxPrice, sortBy, sortOrder]);
 
   const handleAddToCart = (product) => {
-    if (!user) return alert('Please log in to add items to your cart.');
+    if (!user) {
+      toast.error('Please log in to add items to your cart.');
+      return;
+    }
     addToCart(product);
   };
 
