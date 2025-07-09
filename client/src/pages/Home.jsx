@@ -453,14 +453,14 @@ const Home = () => {
 
 {(() => {
   const images = [
-    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1551298370-9c50423c8d2d?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+    '/Tingalabak,Batangas_edited.jpg',
+    '/Sto Tomas,Batangas_edited.jpg',
+    '/Sabang,Puerto Galera2_edited.jpg',
+    '/Banaba,Batangas_edited.jpg',
+    '/Sabang,Puerto Galera1_edited.jpg',
+    '/Paranaque,Manila_edited.jpg',
+    '/Cuta,Batangas_edited.jpg',
+    '/Alangilan,Batangas_edited.jpeg',
   ];
 
   const heading = 'Find your dream aesthetic';
@@ -547,22 +547,40 @@ const Home = () => {
           }}
         >
           {extendedImages.map((src, idx) => (
-            <img
-              key={`${src}-${idx}`}
-              src={src}
-              alt={`Gallery image ${(idx % images.length) + 1}`}
-              loading="lazy"
-              style={{
-                width: 'clamp(54px, 22vw, 420px)',
-                height: 'clamp(54px, 22vw, 420px)',
-                objectFit: 'cover',
-                borderRadius: 'clamp(8px, 4vw, 20px)',
-                boxShadow: 'none',
-                cursor: 'pointer',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                flexShrink: 0
-              }}
-            />
+            <div className="gallery-image-wrapper" key={`${src}-${idx}`} style={{ position: 'relative', width: 'clamp(54px, 22vw, 420px)', height: 'clamp(54px, 22vw, 420px)', display: 'inline-block' }}>
+              <img
+                src={src}
+                alt={`Gallery image ${(idx % images.length) + 1}`}
+                loading="lazy"
+                style={{
+                  width: 'clamp(54px, 22vw, 420px)',
+                  height: 'clamp(54px, 22vw, 420px)',
+                  objectFit: 'cover',
+                  borderRadius: 'clamp(8px, 4vw, 20px)',
+                  boxShadow: 'none',
+                  cursor: 'pointer',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  flexShrink: 0
+                }}
+              />
+              {/* Overlay with location info */}
+              {(() => {
+                // Extract filename, remove leading slash and extension
+                const filename = src.split('/').pop().replace(/_edited\.(jpg|jpeg)/i, '');
+                // Split by comma to get place and district
+                let [place, district] = filename.split(',').map(s => s.trim());
+                // Remove trailing numbers from district (e.g., 'Puerto Galera1' -> 'Puerto Galera')
+                if (district) district = district.replace(/\d+$/, '').trim();
+                return (
+                  <div className="gallery-image-overlay">
+                    <div className="gallery-image-location">
+                      <div className="gallery-image-place">{place || ''}</div>
+                      <div className="gallery-image-district">{district || ''}</div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
           ))}
         </div>
       </section>
@@ -1487,6 +1505,54 @@ const Home = () => {
           margin-bottom: 1.5em;
           text-align: center;
           font-family: 'Poppins', sans-serif;
+        }
+        /* Gallery Image Hover Overlay */
+        .gallery-image-wrapper {
+          position: relative;
+          display: inline-block;
+          /* No z-index or background here */
+        }
+        .gallery-image-overlay {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(30, 30, 30, 0.62); /* darker semi-transparent gray */
+          opacity: 0;
+          transition: opacity 0.3s;
+          pointer-events: none;
+          border-radius: clamp(8px, 4vw, 20px);
+          /* No z-index here, so ::before/::after arc stays on top */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .gallery-image-wrapper:hover .gallery-image-overlay {
+          opacity: 1;
+        }
+        .gallery-image-location {
+          color: #fff;
+          text-align: center;
+          font-family: 'Poppins', sans-serif;
+          font-size: clamp(0.9rem, 2vw, 1.25rem);
+          font-weight: 600;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+          line-height: 1.2;
+        }
+        .gallery-image-place {
+          font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+          font-weight: 700;
+          margin-bottom: 0.2em;
+        }
+        .gallery-image-district {
+          font-size: clamp(0.9rem, 2vw, 1.1rem);
+          font-weight: 500;
+        }
+        /* Ensure section pseudo-elements (arc) stay on top */
+        section {
+          position: relative;
+          z-index: 0;
+        }
+        section::before, section::after {
+          z-index: 2;
         }
       `}</style>
     </div>
