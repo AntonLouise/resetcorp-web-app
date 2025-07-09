@@ -451,6 +451,200 @@ const Home = () => {
 
 </section>
 
+{(() => {
+  const images = [
+    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1551298370-9c50423c8d2d?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+  ];
+
+  const heading = 'Find your dream aesthetic';
+  const subheading = `You should feel safe when sitting in, or leaning on the piece, and you shouldn't be able to recognize any way in which it is flawed.`;
+  const cta = 'Scroll down to see our services';
+
+  const wrapperRef = React.useRef();
+  const [isAnimating, setIsAnimating] = React.useState(true);
+
+  React.useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setIsAnimating(false);
+      return;
+    }
+    if (!isAnimating) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    let animationId;
+    const imageWidth = 452; // 420px width + 32px gap
+    const totalWidth = images.length * imageWidth;
+    const animate = () => {
+      if (wrapper && isAnimating) {
+        const currentScroll = wrapper.scrollLeft;
+        const newScroll = currentScroll + 0.5;
+        if (newScroll >= totalWidth) {
+          wrapper.scrollLeft = 0;
+        } else {
+          wrapper.scrollLeft = newScroll;
+        }
+      }
+      animationId = requestAnimationFrame(animate);
+    };
+    animationId = requestAnimationFrame(animate);
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [isAnimating, images.length]);
+
+  // Create multiple copies for seamless loop
+  const extendedImages = [...images, ...images, ...images];
+
+  return (
+    <div style={{
+      width: '100%',
+      background: '#fff',
+      padding: '5rem 0',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxSizing: 'border-box'
+    }}>
+      <h2 className="section-title">Real Installations, Real Impact</h2>
+      <div className="section-subtitle">Explore how Reset Corp’s products are powering homes, businesses, and communities.</div>
+      <section
+        style={{
+          width: '100vw',
+          overflow: 'hidden',
+          position: 'relative',
+          '--v-offset': '80px',
+          '--curve-height': '180px',
+          padding: 0,
+        }}
+      >
+        <div
+          ref={wrapperRef}
+          className="wrapper"
+          style={{
+            display: 'grid',
+            gridTemplateRows: 'clamp(80px, 30vw, 420px)',
+            gridAutoFlow: 'column',
+            gridGap: 'clamp(4px, 3vw, 32px)',
+            overflow: 'auto',
+            scrollSnapType: 'none',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            paddingLeft: 'clamp(4px, 2vw, 2rem)',
+            paddingRight: 'clamp(4px, 2vw, 2rem)',
+            scrollBehavior: 'auto',
+            background: '#fff',
+            width: '100%',
+            maxWidth: '100vw',
+          }}
+        >
+          {extendedImages.map((src, idx) => (
+            <img
+              key={`${src}-${idx}`}
+              src={src}
+              alt={`Gallery image ${(idx % images.length) + 1}`}
+              loading="lazy"
+              style={{
+                width: 'clamp(54px, 22vw, 420px)',
+                height: 'clamp(54px, 22vw, 420px)',
+                objectFit: 'cover',
+                borderRadius: 'clamp(8px, 4vw, 20px)',
+                boxShadow: 'none',
+                cursor: 'pointer',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                flexShrink: 0
+              }}
+            />
+          ))}
+        </div>
+      </section>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontFamily: "'Inter', 'Roboto', Arial, sans-serif",
+        fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+        color: '#1a232b',
+        marginTop: '3.5rem',
+        gap: '0.5rem'
+      }}>
+        <span>{cta}</span>
+        <span
+          className="carousel-down-arrow"
+          aria-hidden="true"
+          style={{
+            fontSize: '2.5rem',
+            color: '#1a232b'
+          }}
+        >
+          ↓
+        </span>
+      </div>
+      <style>{`
+        .wrapper::-webkit-scrollbar { 
+          display: none; 
+        }
+        section::before, section::after {
+          content: "";
+          display: block;
+          background: white;
+          width: calc(100vw + 2 * var(--v-offset));
+          height: var(--curve-height);
+          position: absolute;
+          border-radius: 50%;
+          left: calc(-1 * var(--v-offset));
+          right: calc(-1 * var(--v-offset));
+        }
+        section::before { 
+          top: calc(-0.6 * var(--curve-height)); 
+        }
+        section::after { 
+          bottom: calc(-0.6 * var(--curve-height)); 
+        }
+        @keyframes arrow-bounce { 
+          0% { transform: translateY(0); } 
+          100% { transform: translateY(18px); } 
+        }
+        .carousel-down-arrow { 
+          animation: arrow-bounce 1.5s infinite alternate; 
+        }
+        @media (max-width: 1024px) {
+          section::before,
+          section::after {
+            display: none !important;
+          }
+          .wrapper {
+            grid-template-rows: clamp(54px, 18vw, 300px);
+          }
+        }
+        @media (max-width: 768px) {
+          .wrapper {
+            grid-template-rows: clamp(40px, 22vw, 160px);
+            grid-gap: clamp(2px, 2vw, 8px);
+            padding-left: 1vw;
+            padding-right: 1vw;
+          }
+        }
+        @media (max-width: 480px) {
+          .wrapper {
+            grid-template-rows: clamp(32px, 24vw, 80px);
+            grid-gap: 4px;
+            padding-left: 0.5vw;
+            padding-right: 0.5vw;
+          }
+        }
+      `}</style>
+    </div>
+  );
+})()}
 
       <section id="services" className="homepage-section services-section" style={{
         background: '#fff',
@@ -1276,6 +1470,23 @@ const Home = () => {
           .stat-desc {
             font-size: 0.9rem;
           }
+        }
+        .section-title {
+          font-size: clamp(2.2rem, 5vw, 3.2rem);
+          font-weight: 700;
+          color: #111 !important;
+          margin-bottom: 0.5em;
+          text-align: center;
+          letter-spacing: -1px;
+          font-family: 'Poppins', sans-serif;
+        }
+        .section-subtitle {
+          font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+          font-weight: 400;
+          color: #444 !important;
+          margin-bottom: 1.5em;
+          text-align: center;
+          font-family: 'Poppins', sans-serif;
         }
       `}</style>
     </div>
