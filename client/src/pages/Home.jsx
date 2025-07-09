@@ -220,14 +220,14 @@ const Home = () => {
         <div className="sliding-stats-container single-row">
           <div className="sliding-stats-track">
             <div className="stat-group">
-              <div className="stat-number huge">120+</div>
+              <div className="stat-number huge">30+</div>
               <div className="stat-label">
                 <span className="stat-title">Projects</span>
-                <span className="stat-desc">Completed worldwide</span>
+                <span className="stat-desc">Completed Nationwide</span>
               </div>
             </div>
             <div className="stat-group">
-              <div className="stat-number huge">98%</div>
+              <div className="stat-number huge">100%</div>
               <div className="stat-label">
                 <span className="stat-title">Satisfaction</span>
                 <span className="stat-desc">Client approval rate</span>
@@ -237,33 +237,26 @@ const Home = () => {
               <div className="stat-number huge">24/7</div>
               <div className="stat-label">
                 <span className="stat-title">Support</span>
-                <span className="stat-desc">Always available</span>
+                <span className="stat-desc">Thru Email</span>
               </div>
             </div>
             <div className="stat-group">
-              <div className="stat-number huge">50+</div>
+              <div className="stat-number huge">15+</div>
               <div className="stat-label">
                 <span className="stat-title">Team Members</span>
                 <span className="stat-desc">Expert professionals</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">10</div>
-              <div className="stat-label">
-                <span className="stat-title">Awards</span>
-                <span className="stat-desc">Industry recognition</span>
               </div>
             </div>
             {/* Duplicate for continuous effect */}
             <div className="stat-group">
-              <div className="stat-number huge">120+</div>
+              <div className="stat-number huge">30+</div>
               <div className="stat-label">
                 <span className="stat-title">Projects</span>
-                <span className="stat-desc">Completed worldwide</span>
+                <span className="stat-desc">Completed Nationwide</span>
               </div>
             </div>
             <div className="stat-group">
-              <div className="stat-number huge">98%</div>
+              <div className="stat-number huge">100%</div>
               <div className="stat-label">
                 <span className="stat-title">Satisfaction</span>
                 <span className="stat-desc">Client approval rate</span>
@@ -273,21 +266,14 @@ const Home = () => {
               <div className="stat-number huge">24/7</div>
               <div className="stat-label">
                 <span className="stat-title">Support</span>
-                <span className="stat-desc">Always available</span>
+                <span className="stat-desc">Thru Email</span>
               </div>
             </div>
             <div className="stat-group">
-              <div className="stat-number huge">50+</div>
+              <div className="stat-number huge">15+</div>
               <div className="stat-label">
                 <span className="stat-title">Team Members</span>
                 <span className="stat-desc">Expert professionals</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">10</div>
-              <div className="stat-label">
-                <span className="stat-title">Awards</span>
-                <span className="stat-desc">Industry recognition</span>
               </div>
             </div>
           </div>
@@ -982,9 +968,12 @@ const Home = () => {
               </a>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-              <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20 }}>call</span>
-              <a href="tel:+15551234567" style={{ color: '#28a745', textDecoration: 'none', fontWeight: 500 }}>+1 (555) 123-4567</a>
-            </div>
+  <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20 }}>call</span>
+  <a href="tel:+63439800385" style={{ color: '#28a745', textDecoration: 'none', fontWeight: 500 }}>
+    (043) 980-0385
+  </a>
+</div>
+
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 10 }}>
               <span className="material-symbols-outlined" style={{ color: '#28a745', fontSize: 20, marginTop: 2 }}>location_on</span>
               <span style={{ color: '#333', fontSize: '1rem' }}>Batangas, 4200, Philippines</span>

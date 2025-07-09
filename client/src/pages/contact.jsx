@@ -192,22 +192,15 @@ const Contact = () => {
 </div>
 <div className="contact-card-info">
   <FaPhone className="contact-card-icon" />
-  <div className="contact-card-title">Phone:</div>
   <div className="contact-card-desc">
-    <a
-      href="tel:+1555123456"
-      className="contact-card-phone-link"
-    >
-      +1 (555) 123–456
-    </a>
-    <br />
-    <a
-      href="tel:+1555987654"
-      className="contact-card-phone-link"
-    >
-      +1 (555) 987–654
-    </a>
-  </div>
+  <a
+    href="tel:+63439800385,2404"
+    className="contact-card-phone-link"
+  >
+    (043) 980-0385 loc. 2404
+  </a>
+</div>
+
 </div>
           <div className="contact-card-info">
             <FaMapMarkerAlt className="contact-card-icon" />
@@ -217,7 +210,7 @@ const Contact = () => {
           <div className="contact-card-info">
             <FaClock className="contact-card-icon" />
             <div className="contact-card-title">Business Hours:</div>
-            <div className="contact-card-desc">Mon–Fri: 8:00 AM – 6:00 PM<br />Sat: 9:00 AM – 3:00 PM<br />Sun: Closed</div>
+            <div className="contact-card-desc">Mon–Fri: 8:00 AM – 5:00 PM<br />Sat: Closed<br />Sun: Closed</div>
           </div>
         </div>
       </div>

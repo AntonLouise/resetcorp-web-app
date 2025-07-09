@@ -19,7 +19,7 @@ const Login = () => {
       const data = await login(form);
       loginUser(data);
       toast.success('Login successful');
-      navigate('/'); // Redirect to home page after successful login
+      setTimeout(() => navigate('/'), 1000); // Delay navigation to show toast
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
       console.error(err);

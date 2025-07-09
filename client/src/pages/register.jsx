@@ -52,7 +52,7 @@ const Register = () => {
       await register({ name: form.name, email: form.email, password: form.password });
       setSuccess(true);
       toast.success('Registration successful! Please log in.');
-      navigate('/login');
+      setTimeout(() => navigate('/login'), 1000); // Delay navigation to show toast
     } catch (err) {
       console.error('Registration error:', err);
       if (err.response?.data?.errors) {
