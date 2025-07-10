@@ -3,6 +3,7 @@ import { login } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import AnimatedBackground from '../components/AnimatedBackground';
 
 const Login = () => {
   const { login: loginUser } = useAuth();
@@ -77,6 +78,8 @@ const Login = () => {
     <div style={{
       minHeight: '100vh',
       width: '100vw',
+      position: 'relative', // <-- add this!
+      overflow: 'hidden',   // <-- add this!
       background: 'linear-gradient(135deg, #b2f0e6 0%, #d0f7c6 100%)',
       display: 'flex',
       alignItems: 'center',
@@ -85,6 +88,7 @@ const Login = () => {
       margin: 0,
       flexDirection: 'column',
     }}>
+      <AnimatedBackground />
       <div 
         className="login-split-card" 
         style={{

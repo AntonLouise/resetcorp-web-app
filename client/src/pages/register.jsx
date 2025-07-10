@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { register } from '../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import AnimatedBackground from '../components/AnimatedBackground';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -88,6 +89,8 @@ const Register = () => {
     <div style={{
       minHeight: '100vh',
       width: '100vw',
+      position: 'relative', // <-- add this!
+      overflow: 'hidden',   // <-- add this!
       background: 'linear-gradient(135deg, #b2f0e6 0%, #d0f7c6 100%)',
       display: 'flex',
       alignItems: 'center',
@@ -96,6 +99,7 @@ const Register = () => {
       padding: 0,
       margin: 0,
     }}>
+      <AnimatedBackground />
       <div 
         className="login-split-card" 
         style={{
