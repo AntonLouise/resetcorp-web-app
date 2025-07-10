@@ -96,6 +96,7 @@ const Product = () => {
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -183,6 +184,11 @@ const Product = () => {
 
     setFilteredProducts(filtered);
   }, [products, selectedCategory, search, minPrice, maxPrice, sortBy, sortOrder]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleAddToCart = (product) => {
     if (!user) {
@@ -295,12 +301,13 @@ const Product = () => {
           }
         }
         .product-card {
-          transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.5s, top 0.5s;
+          transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
           box-shadow: 0 2px 12px rgba(40,167,69,0.08);
           position: relative;
           opacity: 0;
-          top: 24px;
-          animation: fadeInUp 0.6s cubic-bezier(.4,0,.2,1) forwards;
+        }
+        .product-card.visible {
+          opacity: 1;
         }
         .product-card:hover {
           box-shadow: 0 8px 32px rgba(40,167,69,0.18);
@@ -375,7 +382,19 @@ const Product = () => {
       `}</style>
       <div style={styles.bgGreen} className="products-bg-main">
         <div style={{ ...styles.sectionContainer }}>
-          <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
+          <div 
+            style={{ 
+              width: '100%',
+              maxWidth: 1400,
+              margin: '0 auto',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '1rem',
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s',
+            }}
+          >
             <div style={{ position: 'relative', width: '100%' }}>
               <span className="material-symbols-outlined" style={{ position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '1.5rem', pointerEvents: 'none' }}>search</span>
               <input
@@ -401,7 +420,13 @@ const Product = () => {
               />
             </div>
           </div>
-          <div style={styles.heroCardWide}>
+          <div
+            style={{
+              ...styles.heroCardWide,
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s',
+            }}
+          >
             <div className="hero-text" style={styles.heroText}>
               <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: 0, display: 'flex', flexDirection: 'column', color: '#000' }}>
                 <span style={{ display: 'block', marginBottom: 18 }}>Browse our Products</span>
@@ -414,7 +439,7 @@ const Product = () => {
           </div>
         </div>
 
-        <div style={{ ...styles.sectionContainer, paddingTop: '1rem', paddingBottom: '2rem' }}>
+        <div style={{ ...styles.sectionContainer, paddingTop: '1rem', paddingBottom: '2rem', opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s' }}>
           <div className="filters-wrapper" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
             <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)} style={{ 
               padding: '0.75rem 2.5rem 0.75rem 1.5rem',
@@ -599,8 +624,28 @@ const Product = () => {
                   No products available at the moment.
                 </div>
               ) : (
-                filteredProducts.map(product => (
-                  <div key={product._id} className="product-card" style={{ background: '#fff', borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '300px', flex: '1 1 260px', boxSizing: 'border-box', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '370px' }}>
+                filteredProducts.map((product, idx) => (
+                  <div
+                    key={product._id}
+                    className={`product-card${isVisible ? ' visible' : ''}`}
+                    style={{
+                      background: '#fff',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      width: '100%',
+                      maxWidth: '300px',
+                      flex: '1 1 260px',
+                      boxSizing: 'border-box',
+                      textAlign: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      minHeight: '370px',
+                      transition: 'opacity 0.7s cubic-bezier(.4,0,.2,1)',
+                      opacity: isVisible ? 1 : 0,
+                      transitionDelay: isVisible ? `${0.2 + idx * 0.08}s` : '0s',
+                    }}
+                  >
                     <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
                     <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
                     <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>

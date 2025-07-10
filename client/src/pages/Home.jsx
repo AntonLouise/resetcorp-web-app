@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ContactModal from '../components/ContactModal';
 import QuoteModal from '../components/QuoteModal';
 import ServiceDetailModal from '../components/ServiceDetailModal';
@@ -83,6 +83,48 @@ const Home = () => {
   const slide = featuredSlides[currentSlide];
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchEndX, setTouchEndX] = useState(null);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const [areStatsVisible, setAreStatsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsHeroVisible(true), 100);
+    const statsTimer = setTimeout(() => setAreStatsVisible(true), 900); // after hero anim
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(statsTimer);
+    };
+  }, []);
+
+  // Animated stat numbers
+  const statData = [
+    { value: '30+', label1: 'Projects', label2: 'Completed Nationwide' },
+    { value: '100%', label1: 'Satisfaction', label2: 'Client approval rate' },
+    { value: '24/7', label1: 'Support', label2: 'Thru Email' },
+    { value: '15+', label1: 'Team Members', label2: 'Expert professionals' },
+  ];
+  const [statCounts, setStatCounts] = useState(statData.map(() => 0));
+  useEffect(() => {
+    if (!areStatsVisible) return;
+    const durations = [1200, 1200, 1200, 1200];
+    const starts = statData.map(() => Date.now());
+    let raf;
+    function animate() {
+      const now = Date.now();
+      setStatCounts(statCounts => statCounts.map((prev, i) => {
+        const elapsed = now - starts[i];
+        const progress = Math.min(elapsed / durations[i], 1);
+        const target = statData[i].value;
+        return Math.floor(progress * target);
+      }));
+      if (statCounts.some((count, i) => count < statData[i].value)) {
+        raf = requestAnimationFrame(animate);
+      } else {
+        setStatCounts(statData.map(d => d.value));
+      }
+    }
+    raf = requestAnimationFrame(animate);
+    return () => raf && cancelAnimationFrame(raf);
+  }, [areStatsVisible]);
 
   // Only enable swipe when navbar is in hamburger mode (<=1499px)
   const isTouchEnabled = typeof window !== 'undefined' && window.innerWidth <= 1499;
@@ -170,47 +212,71 @@ const Home = () => {
           background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.72) 0%, rgba(11, 11, 12, 0.92) 100%)',
           zIndex: 2,
         }} />
-        <div className="homepage-content" style={{
-          position: 'relative',
-          zIndex: 3,
-          maxWidth: 650,
-          width: '100%',
-          margin: '0 auto',
-          color: '#fff',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          padding: '0 2rem',
-        }}>
-          <h1 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            fontWeight: 700,
-            marginBottom: 14,
-            lineHeight: 1.08,
-            letterSpacing: '-2px',
-            fontFamily: 'Poppins, sans-serif',
-            textShadow: '0 4px 24px rgba(0,0,0,0.18)',
-            maxWidth: '650px',
-          }}>
+        <div
+          className="homepage-content hero-animate"
+          style={{
+            position: 'relative',
+            zIndex: 3,
+            maxWidth: 650,
+            width: '100%',
+            margin: '0 auto',
+            color: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            padding: '0 2rem',
+            opacity: isHeroVisible ? 1 : 0,
+            transform: isHeroVisible ? 'translateY(0)' : 'translateY(40px)',
+            transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontWeight: 700,
+              marginBottom: 14,
+              lineHeight: 1.08,
+              letterSpacing: '-2px',
+              fontFamily: 'Poppins, sans-serif',
+              textShadow: '0 4px 24px rgba(0,0,0,0.18)',
+              maxWidth: '650px',
+              opacity: isHeroVisible ? 1 : 0,
+              transform: isHeroVisible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: isHeroVisible ? '0.2s' : '0s',
+            }}
+          >
             Sustainable Energy<br />
             <span className="nowrap-span">that Adapts to You</span>
           </h1>
-          <p style={{
-            fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
-            fontWeight: 400,
-            marginBottom: 36,
-            maxWidth: 580,
-            color: '#f3f3f3',
-            textShadow: '0 2px 8px rgba(0,0,0,0.10)',
-            lineHeight: 1.5
-          }}>
+          <p
+            style={{
+              fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
+              fontWeight: 400,
+              marginBottom: 36,
+              maxWidth: 580,
+              color: '#f3f3f3',
+              textShadow: '0 2px 8px rgba(0,0,0,0.10)',
+              lineHeight: 1.5,
+              opacity: isHeroVisible ? 1 : 0,
+              transform: isHeroVisible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: isHeroVisible ? '0.4s' : '0s',
+            }}
+          >
             Embrace a greener future with innovative solutions tailored for eco-conscious living.
           </p>
           <button
             className="flash-slide flash-slide--green"
             onClick={() => navigate('/products')}
+            style={{
+              opacity: isHeroVisible ? 1 : 0,
+              transform: isHeroVisible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: isHeroVisible ? '0.6s' : '0s',
+            }}
           >
             Shop Now
           </button>
@@ -219,63 +285,25 @@ const Home = () => {
         <div className="stats-spacer-1920" />
         <div className="sliding-stats-container single-row">
           <div className="sliding-stats-track">
-            <div className="stat-group">
-              <div className="stat-number huge">30+</div>
-              <div className="stat-label">
-                <span className="stat-title">Projects</span>
-                <span className="stat-desc">Completed Nationwide</span>
+            {statData.concat(statData).map((stat, i) => (
+              <div
+                className="stat-group stat-animate"
+                key={i}
+                style={{
+                  opacity: areStatsVisible ? 1 : 0,
+                  transition: 'opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transitionDelay: areStatsVisible ? `${0.2 + 0.12 * (i % 4)}s` : '0s',
+                }}
+              >
+                <div className="stat-number huge">
+                  {stat.value}
+                </div>
+                <div className="stat-label">
+                  <span className="stat-title">{stat.label1}</span>
+                  <span className="stat-desc">{stat.label2}</span>
+                </div>
               </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">100%</div>
-              <div className="stat-label">
-                <span className="stat-title">Satisfaction</span>
-                <span className="stat-desc">Client approval rate</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">24/7</div>
-              <div className="stat-label">
-                <span className="stat-title">Support</span>
-                <span className="stat-desc">Thru Email</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">15+</div>
-              <div className="stat-label">
-                <span className="stat-title">Team Members</span>
-                <span className="stat-desc">Expert professionals</span>
-              </div>
-            </div>
-            {/* Duplicate for continuous effect */}
-            <div className="stat-group">
-              <div className="stat-number huge">30+</div>
-              <div className="stat-label">
-                <span className="stat-title">Projects</span>
-                <span className="stat-desc">Completed Nationwide</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">100%</div>
-              <div className="stat-label">
-                <span className="stat-title">Satisfaction</span>
-                <span className="stat-desc">Client approval rate</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">24/7</div>
-              <div className="stat-label">
-                <span className="stat-title">Support</span>
-                <span className="stat-desc">Thru Email</span>
-              </div>
-            </div>
-            <div className="stat-group">
-              <div className="stat-number huge">15+</div>
-              <div className="stat-label">
-                <span className="stat-title">Team Members</span>
-                <span className="stat-desc">Expert professionals</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1543,6 +1571,8 @@ const Home = () => {
         section::before, section::after {
           z-index: 2;
         }
+        .hero-animate { will-change: opacity, transform; }
+        .stat-animate { will-change: opacity; }
       `}</style>
     </div>
   );

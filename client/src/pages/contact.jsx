@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import ContactModal from '../components/ContactModal';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +6,12 @@ import { useAuth } from '../context/AuthContext';
 const Contact = () => {
   const [showContactModal, setShowContactModal] = useState(false);
   const { user } = useAuth();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleContactUs = () => {
     setShowContactModal(true);
@@ -24,6 +30,8 @@ const Contact = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      opacity: isVisible ? 1 : 0,
+      transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
@@ -165,9 +173,15 @@ const Contact = () => {
             max-width: 120px !important;
           }
         }
+        .contact-card.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s; }
+        .contact-card.fade-animate.visible { opacity: 1; }
+        .contact-header-bar.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s; }
+        .contact-header-bar.fade-animate.visible { opacity: 1; }
+        .contact-card-info.fade-animate { opacity: 0; transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .contact-card-info.fade-animate.visible { opacity: 1; }
       `}</style>
-      <div className="contact-card">
-        <div className="contact-header-bar">
+      <div className={`contact-card fade-animate${isVisible ? ' visible' : ''}`}>
+        <div className={`contact-header-bar fade-animate${isVisible ? ' visible' : ''}`}>
           <div className="contact-header-title">Get in Touch</div>
           <div className="contact-header-sub">Ready to start your project? Contact us today for consultation</div>
           <div className="contact-header-btn-row">
@@ -177,41 +191,50 @@ const Contact = () => {
           </div>
         </div>
         <div className="contact-cards-row">
-        <div className="contact-card-info">
-        <FaEnvelope className="contact-card-icon" />
-<div className="contact-card-title">Email:</div>
-<a
-  href="https://mail.google.com/mail/?view=cm&fs=1&to=collapsiblesolar@gmail.com"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="contact-card-link"
-  style={{ fontWeight: 'normal', fontSize: '0.9rem' }}
->
-  collapsiblesolar@gmail.com
-</a>
-</div>
-<div className="contact-card-info">
-  <FaPhone className="contact-card-icon" />
-  <div className="contact-card-desc">
-  <a
-    href="tel:+63439800385,2404"
-    className="contact-card-phone-link"
-  >
-    (043) 980-0385 loc. 2404
-  </a>
-</div>
-
-</div>
-          <div className="contact-card-info">
-            <FaMapMarkerAlt className="contact-card-icon" />
-            <div className="contact-card-title">Address:</div>
-            <div className="contact-card-desc">2/F Steerhub<br />Batangas State University,<br />Batangas City,<br />4200, Philippines</div>
-          </div>
-          <div className="contact-card-info">
-            <FaClock className="contact-card-icon" />
-            <div className="contact-card-title">Business Hours:</div>
-            <div className="contact-card-desc">Mon–Fri: 8:00 AM – 5:00 PM<br />Sat: Closed<br />Sun: Closed</div>
-          </div>
+          {React.Children.map([
+            <div className="contact-card-info fade-animate" key="email">
+              <FaEnvelope className="contact-card-icon" />
+              <div className="contact-card-title">Email:</div>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=collapsiblesolar@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-card-link"
+                style={{ fontWeight: 'normal', fontSize: '0.9rem' }}
+              >
+                collapsiblesolar@gmail.com
+              </a>
+            </div>,
+            <div className="contact-card-info fade-animate" key="phone">
+              <FaPhone className="contact-card-icon" />
+              <div className="contact-card-desc">
+                <a
+                  href="tel:+63439800385,2404"
+                  className="contact-card-phone-link"
+                >
+                  (043) 980-0385 loc. 2404
+                </a>
+              </div>
+            </div>,
+            <div className="contact-card-info fade-animate" key="address">
+              <FaMapMarkerAlt className="contact-card-icon" />
+              <div className="contact-card-title">Address:</div>
+              <div className="contact-card-desc">Batangas State University, Batangas City, Philippines</div>
+            </div>,
+            <div className="contact-card-info fade-animate" key="hours">
+              <FaClock className="contact-card-icon" />
+              <div className="contact-card-title">Office Hours:</div>
+              <div className="contact-card-desc">Mon - Fri: 8:00 AM - 5:00 PM</div>
+            </div>
+          ], (child, idx) =>
+            React.cloneElement(child, {
+              className: `${child.props.className} ${isVisible ? 'visible' : ''}`,
+              style: {
+                ...(child.props.style || {}),
+                transitionDelay: isVisible ? `${0.3 + idx * 0.12}s` : '0s',
+              }
+            })
+          )}
         </div>
       </div>
       <ContactModal 

@@ -55,6 +55,12 @@ const Profile = () => {
   const [showOrders, setShowOrders] = useState(false);
   const [cancelingOrderId, setCancelingOrderId] = useState(null);
 
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     setProfilePic(user?.profilePicture || '/placeholder.png');
   }, [user]);
@@ -596,10 +602,18 @@ const Profile = () => {
           color: #888 !important;
           background: #f8f9fa !important;
         }
+        .profile-card.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s; }
+        .profile-card.fade-animate.visible { opacity: 1; }
+        .profile-header.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s; }
+        .profile-header.fade-animate.visible { opacity: 1; }
+        .profile-form-section.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s; }
+        .profile-form-section.fade-animate.visible { opacity: 1; }
+        .profile-orders-card.fade-animate { opacity: 0; transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s; }
+        .profile-orders-card.fade-animate.visible { opacity: 1; }
       `}</style>
       <div style={styles.bgGreen}>
         <div style={{ ...styles.sectionContainer, paddingTop: '2rem', paddingBottom: '2rem' }}>
-          <div style={styles.profileCard}>
+          <div className={`profile-card fade-animate${isVisible ? ' visible' : ''}`} style={styles.profileCard}>
             {/* Edit button always in upper right */}
             <button
               type="button"
@@ -608,7 +622,7 @@ const Profile = () => {
             >
               Edit
             </button>
-            <div className="profile-header">
+            <div className={`profile-header fade-animate${isVisible ? ' visible' : ''}`}>
               <div className="profile-pic-area">
                 <div className="profile-pic-circle">
                   {previewUrl || profilePic ? (
@@ -664,7 +678,7 @@ const Profile = () => {
               ].filter(Boolean).join(', ') || 'Address'}</div>
               <div className="profile-info-date">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Join Date'}</div>
             </div>
-            <form onSubmit={handleSubmit} className="profile-form-section">
+            <form onSubmit={handleSubmit} className={`profile-form-section fade-animate${isVisible ? ' visible' : ''}`}>
               <div className="profile-form-title">Personal Information</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '1.5rem', width: '100%' }}>
                 <div className="profile-form-row">
@@ -725,7 +739,7 @@ const Profile = () => {
               </div>
             )}
             {/* My Orders Section at the bottom */}
-            <div className="profile-orders-card">
+            <div className={`profile-orders-card fade-animate${isVisible ? ' visible' : ''}`}>
               <div className="profile-orders-title">My Orders</div>
               <div className="profile-orders-desc">View and manage your order history.</div>
               <button

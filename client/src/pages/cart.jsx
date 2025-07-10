@@ -1,5 +1,6 @@
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 if (typeof document !== 'undefined' && !document.getElementById('cart-hover-effects')) {
   const style = document.createElement('style');
@@ -52,6 +53,11 @@ if (typeof document !== 'undefined' && !document.getElementById('cart-hover-effe
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, loading, getCartTotal } = useCart();
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleQuantityChange = (productId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -76,15 +82,15 @@ const Cart = () => {
   }
 
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
       {/* Header */}
-      <div style={styles.header}>
+      <div style={{ ...styles.header, opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s' }}>
         <h1 style={styles.title}>Shopping Cart</h1>
         <p style={styles.subtitle}>Review your items and proceed to checkout</p>
       </div>
 
       {cart.items.length === 0 ? (
-        <div style={styles.emptyState}>
+        <div style={{ ...styles.emptyState, opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s' }}>
           <span style={styles.emptyIcon} className="material-symbols-outlined">shopping_cart</span>
           <h2 style={styles.emptyTitle}>Your cart is empty</h2>
           <p style={styles.emptyText}>Add some products to your cart to get started.</p>
@@ -97,11 +103,20 @@ const Cart = () => {
           </button>
         </div>
       ) : (
-        <div style={styles.cartContent}>
+        <div style={{ ...styles.cartContent, opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s' }}>
           {/* Cart Items */}
           <div style={styles.itemsList}>
             {cart.items.map((item, idx) => (
-              <div key={item._id} style={styles.cartItem} className="cart-item-hover">
+              <div
+                key={item._id}
+                style={{
+                  ...styles.cartItem,
+                  opacity: isVisible ? 1 : 0,
+                  transition: 'opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transitionDelay: isVisible ? `${0.3 + idx * 0.08}s` : '0s',
+                }}
+                className="cart-item-hover"
+              >
                 {/* Product Image */}
                 <div style={styles.itemImage}>
                   {item.image ? (
@@ -162,7 +177,7 @@ const Cart = () => {
           </div>
 
           {/* Cart Summary */}
-          <div style={styles.cartSummary}>
+          <div style={{ ...styles.cartSummary, opacity: isVisible ? 1 : 0, transition: 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s' }}>
             <div style={styles.summaryRow}>
               <span style={styles.summaryLabel}>Total ({cart.items.length} items)</span>
               <span style={styles.summaryTotal}>₱{getCartTotal().toLocaleString()}</span>
