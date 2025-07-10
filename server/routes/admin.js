@@ -7,11 +7,15 @@ const {
   updateUser,
   deleteUser,
   getAllOrders,
+  getDashboardStats,
 } = require('../controllers/adminController');
 const { protect, admin } = require('../middleware/auth');
 
 // All routes in this file are prefixed with /api/admin and are protected by admin middleware
 router.use(protect, admin);
+
+// Dashboard statistics route
+router.route('/dashboard/stats').get(getDashboardStats);
 
 // User management routes
 router.route('/users').get(getAllUsers);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getAllProducts, deleteProduct } from '../../services/adminService';
 
 // Inject hover effect styles
@@ -31,6 +31,11 @@ if (typeof document !== 'undefined' && !document.getElementById('admin-product-l
       background: #222 !important;
       color: #fff !important;
     }
+    .admin-back-button:hover {
+      transform: scale(1.1);
+      background: rgba(108, 117, 125, 0.1) !important;
+      color: #495057 !important;
+    }
   `;
   document.head.appendChild(style);
 }
@@ -40,6 +45,7 @@ const AdminProductList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -106,6 +112,19 @@ const AdminProductList = () => {
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.headerCentered}>
+        <div style={styles.headerTop}>
+          <button 
+            onClick={() => {
+              navigate('/admin');
+              window.scrollTo(0, 0);
+            }} 
+            style={styles.backIconButton}
+            className="admin-back-button"
+            title="Back to Dashboard"
+          >
+            <span style={styles.backIcon} className="material-symbols-outlined">arrow_back</span>
+          </button>
+        </div>
         <h1 style={styles.title}>{'Product Management'}</h1>
         <p style={styles.subtitle}>{'Manage your product catalog and inventory'}</p>
       </div>
@@ -205,7 +224,34 @@ const styles = {
     minHeight: '100vh',
     background: '#fff',
     padding: '2rem',
-    fontFamily: 'Poppins, sans-serif'
+    fontFamily: 'Poppins, sans-serif',
+    position: 'relative'
+  },
+  headerTop: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginBottom: '1rem'
+  },
+  backIconButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48px',
+    height: '48px',
+    background: 'transparent',
+    color: '#6c757d',
+    border: 'none',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    position: 'absolute',
+    top: '2rem',
+    left: '2rem',
+    zIndex: 10
+  },
+  backIcon: {
+    fontSize: '2rem',
+    color: '#6c757d'
   },
   headerCentered: {
     display: 'flex',

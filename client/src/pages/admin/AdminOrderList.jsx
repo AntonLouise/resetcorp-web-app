@@ -1,10 +1,37 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAllOrders, updateOrderStatus } from '../../services/adminService';
+
+// Inject hover effect styles
+if (typeof document !== 'undefined' && !document.getElementById('admin-order-list-hover-effects')) {
+  const style = document.createElement('style');
+  style.id = 'admin-order-list-hover-effects';
+  style.textContent = `
+    .admin-order-card {
+      transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .admin-order-card:hover {
+      box-shadow: 0 8px 32px rgba(40,167,69,0.13);
+      transform: translateY(-6px) scale(1.01);
+      z-index: 2;
+    }
+    .admin-back-button {
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .admin-back-button:hover {
+      transform: scale(1.1);
+      background: rgba(108, 117, 125, 0.1) !important;
+      color: #495057 !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 const AdminOrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
@@ -114,6 +141,19 @@ const AdminOrderList = () => {
       `}</style>
       {/* Header */}
       <div style={styles.headerCentered}>
+        <div style={styles.headerTop}>
+          <button 
+            onClick={() => {
+              navigate('/admin');
+              window.scrollTo(0, 0);
+            }} 
+            style={styles.backIconButton}
+            className="admin-back-button"
+            title="Back to Dashboard"
+          >
+            <span style={styles.backIcon} className="material-symbols-outlined">arrow_back</span>
+          </button>
+        </div>
         <h1 style={styles.title}>{'Order Management'}</h1>
         <p style={styles.subtitle}>{'Track and manage customer orders'}</p>
       </div>
@@ -209,7 +249,34 @@ const styles = {
     minHeight: '100vh',
     background: '#fff',
     padding: '2rem',
-    fontFamily: 'Poppins, sans-serif'
+    fontFamily: 'Poppins, sans-serif',
+    position: 'relative'
+  },
+  headerTop: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginBottom: '1rem'
+  },
+  backIconButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48px',
+    height: '48px',
+    background: 'transparent',
+    color: '#6c757d',
+    border: 'none',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    position: 'absolute',
+    top: '2rem',
+    left: '2rem',
+    zIndex: 10
+  },
+  backIcon: {
+    fontSize: '2rem',
+    color: '#6c757d'
   },
   headerCentered: {
     display: 'flex',

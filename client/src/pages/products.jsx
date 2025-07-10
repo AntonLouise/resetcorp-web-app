@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -56,6 +56,23 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loadingSpinner: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '3rem 0',
+    color: '#28a745',
+  },
+  spinner: {
+    width: '50px',
+    height: '50px',
+    border: '4px solid #e8f5e8',
+    borderTop: '4px solid #28a745',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+    marginBottom: '1rem',
+  },
 };
 
 const placeholderImage = '/placeholder.png';
@@ -64,6 +81,7 @@ const Product = () => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
   const { user } = useAuth();
+  const toastRef = useRef(null);
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -84,19 +102,49 @@ const Product = () => {
       try {
         setLoading(true);
         setError(null);
+        
+        // Show loading toast only if not already shown
+        if (!toastRef.current) {
+          toastRef.current = toast.loading('Loading products...', {
+            position: "top-right",
+            autoClose: false,
+          });
+        }
+
         const [productsData, categoriesData] = await Promise.all([
           getProducts(),
           getCategories()
         ]);
+        
         setProducts(productsData);
         setCategories(categoriesData);
+        
+        // Update toast to success
+        if (toastRef.current) {
+          toast.update(toastRef.current, {
+            render: `Successfully loaded ${productsData.length} products!`,
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
+          toastRef.current = null;
+        }
       } catch (err) {
         console.error('Error fetching data:', err);
+        let errorMessage = 'Failed to load products. Please refresh the page.';
         if (err.response?.status === 429) {
-          setError('Too many requests. Please wait a moment and try again.');
-        } else {
-          setError('Failed to load products. Please refresh the page.');
+          errorMessage = 'Too many requests. Please wait a moment and try again.';
         }
+        setError(errorMessage);
+        
+        // Show error toast
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+        });
+        
+        // Clear the loading toast reference
+        toastRef.current = null;
       } finally {
         setLoading(false);
       }
@@ -167,9 +215,6 @@ const Product = () => {
     setSortOrder('asc');
   };
 
-  if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading products...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '40px' }}>Error: {error}</div>;
-
   return (
     <>
       <style>{`
@@ -185,6 +230,10 @@ const Product = () => {
         }
         #root {
           width: 100%;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
         .flash-slide {
           border: none;
@@ -530,54 +579,41 @@ const Product = () => {
             </div>
           )}
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-            {filteredProducts.length === 0 ? (
-              <div style={{ textAlign: 'center', width: '100%', padding: '2rem 0', color: '#888', fontSize: '1.2rem', fontWeight: 500 }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: '#bbb', display: 'block', marginBottom: '0.5rem' }}>inventory_2</span>
-                No products available at the moment.
-              </div>
-            ) : (
-              filteredProducts.map(product => (
-                <div key={product._id} className="product-card" style={{ background: '#fff', borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '300px', flex: '1 1 260px', boxSizing: 'border-box', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '370px' }}>
-                  <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
-                  <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
-                  <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>
-                  <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.description || 'No description available.'}</p>
-                  <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <button 
-                      onClick={() => navigate(`/product/${product._id}`)}
-                      style={{ 
-                        width: '100%',
-                        fontSize: '0.9rem',
-                        fontWeight: '600',
-                        padding: '0.6rem 1rem',
-                        background: '#000',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                      onMouseEnter={e => {
-                        e.target.style.background = '#222';
-                        e.target.style.transform = 'translateY(-1px)';
-                      }}
-                      onMouseLeave={e => {
-                        e.target.style.background = '#000';
-                        e.target.style.transform = 'translateY(0)';
-                      }}
-                    >
-                      View Details
-                    </button>
-                    {user?.role !== 'admin' && (
+          {loading ? (
+            <div style={styles.loadingSpinner}>
+              <div style={styles.spinner}></div>
+              <p style={{ fontSize: '1.1rem', fontWeight: '500', margin: 0, color: '#28a745' }}>
+                Loading products...
+              </p>
+            </div>
+          ) : error ? (
+            <div style={{ textAlign: 'center', padding: '2rem 0', color: '#f44336', fontSize: '1.2rem', fontWeight: 500 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: '#f44336', display: 'block', marginBottom: '0.5rem' }}>error</span>
+              {error}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+              {filteredProducts.length === 0 ? (
+                <div style={{ textAlign: 'center', width: '100%', padding: '2rem 0', color: '#888', fontSize: '1.2rem', fontWeight: 500 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '3rem', color: '#bbb', display: 'block', marginBottom: '0.5rem' }}>inventory_2</span>
+                  No products available at the moment.
+                </div>
+              ) : (
+                filteredProducts.map(product => (
+                  <div key={product._id} className="product-card" style={{ background: '#fff', borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '300px', flex: '1 1 260px', boxSizing: 'border-box', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '370px' }}>
+                    <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
+                    <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
+                    <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>
+                    <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.description || 'No description available.'}</p>
+                    <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <button 
-                        onClick={() => handleAddToCart(product)} 
+                        onClick={() => navigate(`/product/${product._id}`)}
                         style={{ 
                           width: '100%',
                           fontSize: '0.9rem',
                           fontWeight: '600',
                           padding: '0.6rem 1rem',
-                          background: '#28a745',
+                          background: '#000',
                           color: '#fff',
                           border: 'none',
                           borderRadius: '8px',
@@ -585,22 +621,49 @@ const Product = () => {
                           transition: 'all 0.2s'
                         }}
                         onMouseEnter={e => {
-                          e.target.style.background = '#218838';
+                          e.target.style.background = '#222';
                           e.target.style.transform = 'translateY(-1px)';
                         }}
                         onMouseLeave={e => {
-                          e.target.style.background = '#28a745';
+                          e.target.style.background = '#000';
                           e.target.style.transform = 'translateY(0)';
                         }}
                       >
-                        Add to Cart{getProductQuantity(product._id) > 0 ? ` (${getProductQuantity(product._id)})` : ''}
+                        View Details
                       </button>
-                    )}
+                      {user?.role !== 'admin' && (
+                        <button 
+                          onClick={() => handleAddToCart(product)} 
+                          style={{ 
+                            width: '100%',
+                            fontSize: '0.9rem',
+                            fontWeight: '600',
+                            padding: '0.6rem 1rem',
+                            background: '#28a745',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => {
+                            e.target.style.background = '#218838';
+                            e.target.style.transform = 'translateY(-1px)';
+                          }}
+                          onMouseLeave={e => {
+                            e.target.style.background = '#28a745';
+                            e.target.style.transform = 'translateY(0)';
+                          }}
+                        >
+                          Add to Cart{getProductQuantity(product._id) > 0 ? ` (${getProductQuantity(product._id)})` : ''}
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

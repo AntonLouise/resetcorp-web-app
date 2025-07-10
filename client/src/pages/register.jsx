@@ -102,29 +102,81 @@ const Register = () => {
         alignItems: 'stretch',
         height: 'auto',
       }}>
-        {/* Left side: Welcome message */}
+        {/* Left side: Illustration and Welcome */}
         <div style={{
           flex: 1,
           minWidth: 0,
           background: 'linear-gradient(135deg, #0fd850 0%, #00f2fe 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
           position: 'relative',
-          height: 'auto',
-          minHeight: '100%',
-          display: 'block',
+          padding: '40px',
+          overflow: 'hidden',
         }}>
+          {/* Geometric shapes for modern design */}
+          <div style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.25)',
+          }}></div>
+          
+          <div style={{
+            position: 'absolute',
+            bottom: '30px',
+            left: '30px',
+            width: '60px',
+            height: '60px',
+            background: 'rgba(255, 255, 255, 0.2)',
+            transform: 'rotate(45deg)',
+          }}></div>
+          
           <div style={{
             position: 'absolute',
             top: '50%',
-            left: 0,
-            width: '100%',
-            transform: 'translateY(-50%)',
-            textAlign: 'center',
+            right: '10px',
+            width: '40px',
+            height: '40px',
+            background: 'rgba(255, 255, 255, 0.3)',
+            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+          }}></div>
+          
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '40px',
+            width: '20px',
+            height: '100px',
+            background: 'rgba(255, 255, 255, 0.18)',
+            borderRadius: '10px',
+            transform: 'rotate(-15deg)',
+          }}></div>
+          
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
             color: '#fff',
             textShadow: '0 2px 8px rgba(0,0,0,0.18)',
-            padding: '0 10px',
+            textAlign: 'left',
           }}>
-            <div style={{ fontSize: '2rem', fontWeight: 400, marginBottom: 8 }}>Welcome!</div>
-            <div style={{ fontSize: '2.2rem', fontWeight: 700, letterSpacing: '-1px' }}>Create Account</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: 12, lineHeight: 1.2 }}>
+              Welcome to<br />
+              <span style={{ color: '#000', fontSize: '2.2rem' }}>RESET Corp.</span>
+            </div>
+            <div style={{ 
+              fontSize: '0.9rem', 
+              fontWeight: 400, 
+              opacity: 0.95,
+              lineHeight: 1.4,
+              maxWidth: '280px',
+            }}>
+              Powering sustainable futures with clean, portable solar energy
+            </div>
           </div>
         </div>
         {/* Right side: Registration form */}

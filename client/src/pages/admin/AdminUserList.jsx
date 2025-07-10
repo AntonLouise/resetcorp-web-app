@@ -1,11 +1,45 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAllUsers, deleteUser } from '../../services/adminService';
+
+// Inject hover effect styles
+if (typeof document !== 'undefined' && !document.getElementById('admin-user-list-hover-effects')) {
+  const style = document.createElement('style');
+  style.id = 'admin-user-list-hover-effects';
+  style.textContent = `
+    .admin-user-card {
+      transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .admin-user-card:hover {
+      box-shadow: 0 8px 32px rgba(40,167,69,0.13);
+      transform: translateY(-6px) scale(1.01);
+      z-index: 2;
+    }
+    .admin-edit-button, .admin-delete-button, .admin-back-button {
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .admin-edit-button:hover {
+      transform: scale(1.02) !important;
+      background: #000000 !important;
+      color: white !important;
+    } 
+    .admin-delete-button:hover {
+      transform: scale(1.02);
+    }
+    .admin-back-button:hover {
+      transform: scale(1.1);
+      background: rgba(108, 117, 125, 0.1) !important;
+      color: #495057 !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 const AdminUserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -85,6 +119,19 @@ const AdminUserList = () => {
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.headerOMatchTextBlock}>
+        <div style={styles.headerTop}>
+          <button 
+            onClick={() => {
+              navigate('/admin');
+              window.scrollTo(0, 0);
+            }} 
+            style={styles.backIconButton}
+            className="admin-back-button"
+            title="Back to Dashboard"
+          >
+            <span style={styles.backIcon} className="material-symbols-outlined">arrow_back</span>
+          </button>
+        </div>
         <h1 style={styles.headerTitleOMatch}>User Management</h1>
         <p style={styles.headerSubtitleOMatch}>Manage user accounts and roles</p>
       </div>
@@ -102,7 +149,7 @@ const AdminUserList = () => {
       {/* Users Grid */}
       <div style={styles.usersGridUser}>
         {users.map((user) => (
-          <div key={user._id} style={styles.userCardUser} className="admin-product-card">
+          <div key={user._id} style={styles.userCardUser} className="admin-user-card">
             <div style={styles.userCardTopUser}>
               <div style={styles.userAvatarUser}>
                 {user.profilePicture ? (
@@ -179,7 +226,34 @@ const styles = {
     minHeight: '100vh',
     background: '#fff',
     padding: '2rem',
-    fontFamily: 'Poppins, sans-serif'
+    fontFamily: 'Poppins, sans-serif',
+    position: 'relative'
+  },
+  headerTop: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginBottom: '1rem'
+  },
+  backIconButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48px',
+    height: '48px',
+    background: 'transparent',
+    color: '#6c757d',
+    border: 'none',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    position: 'absolute',
+    top: '2rem',
+    left: '2rem',
+    zIndex: 10
+  },
+  backIcon: {
+    fontSize: '2rem',
+    color: '#6c757d'
   },
   headerOMatchWrap: {
     position: 'relative',

@@ -15,7 +15,12 @@ const scrollToSection = (sectionId) => {
   setTimeout(() => {
     const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const navbarHeight = 64; // Height of the fixed navbar
+      const sectionTop = section.offsetTop - navbarHeight;
+      window.scrollTo({
+        top: sectionTop,
+        behavior: 'smooth'
+      });
     }
   }, 100); // Delay to ensure DOM is rendered
 };
@@ -83,6 +88,10 @@ const Navbar = () => {
   const handleRoute = (route) => {
     setDrawerOpen(false);
     navigate(route);
+    // Scroll to top when navigating to a new page with a slight delay to ensure the page has loaded
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   };
 
   const handleLogout = () => {

@@ -5,6 +5,7 @@ import { getUserById, updateUser } from '../../services/adminService';
 const AdminUserForm = () => {
   const [user, setUser] = useState({ name: '', email: '', role: '' });
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -33,15 +34,51 @@ const AdminUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    
     try {
       await updateUser(id, user);
       navigate('/admin/users');
     } catch (err) {
       setError('Failed to update user.');
+      setSubmitting(false);
     }
   };
 
-  if (loading) return <p>Loading user...</p>;
+  if (loading) return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        border: '4px solid #f3f3f3',
+        borderTop: '4px solid #28a745',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+        marginBottom: '1rem'
+      }}></div>
+      <p style={{
+        color: '#6c757d',
+        fontSize: '1.1rem',
+        margin: 0,
+        fontWeight: '500'
+      }}>Loading user details...</p>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   // Optionally, mock user ID and joined date for visual
@@ -70,7 +107,12 @@ const AdminUserForm = () => {
               name="name"
               value={user.name}
               onChange={handleInputChange}
-              style={styles.nameInput}
+              disabled={submitting}
+              style={{
+                ...styles.nameInput,
+                background: submitting ? '#f0f0f0' : '#ffffff',
+                cursor: submitting ? 'not-allowed' : 'text'
+              }}
             />
           </div>
           <div style={styles.inputGroup}>
@@ -80,14 +122,29 @@ const AdminUserForm = () => {
               name="email"
               value={user.email}
               onChange={handleInputChange}
-              style={styles.emailInput}
+              disabled={submitting}
+              style={{
+                ...styles.emailInput,
+                background: submitting ? '#f0f0f0' : '#ffffff',
+                cursor: submitting ? 'not-allowed' : 'text'
+              }}
             />
           </div>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Role</label>
             <div style={styles.roleDropdownWrap}>
               <span style={{...styles.roleIcon, color: '#fff'}} className="material-symbols-outlined">{user.role === 'admin' ? 'admin_panel_settings' : 'person'}</span>
-              <select name="role" value={user.role} onChange={handleInputChange} style={styles.roleDropdown}>
+              <select 
+                name="role" 
+                value={user.role} 
+                onChange={handleInputChange} 
+                disabled={submitting}
+                style={{
+                  ...styles.roleDropdown,
+                  cursor: submitting ? 'not-allowed' : 'pointer',
+                  opacity: submitting ? 0.7 : 1
+                }}
+              >
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
               </select>
@@ -98,8 +155,40 @@ const AdminUserForm = () => {
             <div style={styles.extraInfo}><span style={styles.extraLabel}>Joined:</span> <span style={styles.extraValue}>{joined}</span></div>
           </div>
           <div style={styles.buttonRow}>
-            <button type="submit" style={styles.updateButton}>Update User</button>
-            <button type="button" style={styles.cancelButton} onClick={() => navigate('/admin/users')}>Cancel</button>
+            <button 
+              type="submit" 
+              style={{
+                ...styles.updateButton,
+                background: submitting ? '#666' : '#111',
+                cursor: submitting ? 'not-allowed' : 'pointer'
+              }}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid #fff',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite',
+                    marginRight: '8px'
+                  }}></div>
+                  Updating...
+                </>
+              ) : (
+                'Update User'
+              )}
+            </button>
+            <button 
+              type="button" 
+              style={styles.cancelButton} 
+              onClick={() => navigate('/admin/users')}
+              disabled={submitting}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>

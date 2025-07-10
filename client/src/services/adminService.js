@@ -71,6 +71,24 @@ export const updateOrderStatus = async (orderId, status) => {
   return res.data;
 };
 
+// Dashboard Statistics
+export const getDashboardStats = async () => {
+  console.log('=== ADMIN SERVICE: FETCHING DASHBOARD STATS ===');
+  try {
+    const res = await api.get('/admin/dashboard/stats');
+    console.log('=== ADMIN SERVICE: DASHBOARD STATS SUCCESS ===');
+    console.log('Response status:', res.status);
+    console.log('Stats received:', Object.keys(res.data));
+    return res.data;
+  } catch (error) {
+    console.error('=== ADMIN SERVICE: DASHBOARD STATS FAILED ===');
+    console.error('Error:', error);
+    console.error('Error message:', error.message);
+    console.error('Error response:', error.response);
+    throw error;
+  }
+};
+
 // User Management
 export const getAllUsers = async () => {
   const res = await api.get('/admin/users');
