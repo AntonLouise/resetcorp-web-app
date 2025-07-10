@@ -168,17 +168,29 @@ exports.cancelOrder = async (req, res) => {
 exports.deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-    if (!order) return res.status(404).json({ message: 'Order not found' });
+    if (!order) {
+      return res.status(404).json({ 
+        message: `Order not found. No order exists with ID: ${req.params.id}`,
+        orderId: req.params.id
+      });
+    }
 
     // Only admin can delete orders
     if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to delete orders' });
+      return res.status(403).json({ 
+        message: `Not authorized to delete orders. User role: ${req.user.role}`,
+        orderId: req.params.id
+      });
     }
 
     await Order.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Order deleted successfully' });
+    res.json({ message: `Order deleted successfully. ID: ${req.params.id}` });
   } catch (err) {
-    console.error('Failed to delete order:', err);
-    res.status(500).json({ message: 'Failed to delete order' });
+    console.error(`Failed to delete order with ID ${req.params.id}:`, err);
+    res.status(500).json({ 
+      message: `Failed to delete order. Internal error for order ID: ${req.params.id}`,
+      error: err.message,
+      orderId: req.params.id
+    });
   }
 };

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getAllProducts, deleteProduct } from '../../services/adminService';
 import { toast } from 'react-toastify';
+import ConfirmModal from '../../components/ConfirmModal';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-product-list-hover-effects')) {
@@ -45,6 +46,9 @@ const AdminProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -65,32 +69,24 @@ const AdminProductList = () => {
     }
   };
 
-  const handleDelete = async (productId) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      try {
-        await deleteProduct(productId);
-        toast.success('Product deleted successfully!', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        // Refresh list after delete
-        fetchProducts();
-      } catch (err) {
-        const errorMessage = 'Failed to delete product.';
-        setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }
+  const handleDelete = (productId) => {
+    setDeleteId(productId);
+    setConfirmOpen(true);
+  };
+  const confirmDelete = async () => {
+    setConfirmLoading(true);
+    try {
+      await deleteProduct(deleteId);
+      toast.success('Product deleted successfully!', { position: 'top-right', autoClose: 3000 });
+      fetchProducts();
+    } catch (err) {
+      const errorMessage = 'Failed to delete product.';
+      setError(errorMessage);
+      toast.error(errorMessage, { position: 'top-right', autoClose: 5000 });
+    } finally {
+      setConfirmLoading(false);
+      setConfirmOpen(false);
+      setDeleteId(null);
     }
   };
 
@@ -233,6 +229,16 @@ const AdminProductList = () => {
           </Link>
         </div>
       )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Delete Product?"
+        message="Are you sure you want to delete this product? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={confirmLoading}
+        onConfirm={confirmDelete}
+        onCancel={() => { setConfirmOpen(false); setDeleteId(null); }}
+      />
     </div>
   );
 };

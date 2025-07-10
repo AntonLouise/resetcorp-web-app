@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllOrders, updateOrderStatus, deleteOrder } from '../../services/adminService';
 import { toast } from 'react-toastify';
+import ConfirmModal from '../../components/ConfirmModal';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-order-list-hover-effects')) {
@@ -33,6 +34,9 @@ const AdminOrderList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -78,31 +82,24 @@ const AdminOrderList = () => {
     }
   };
 
-  const handleDelete = async (orderId) => {
-    if (window.confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
-      try {
-        await deleteOrder(orderId);
-        toast.success('Order deleted successfully!', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        fetchOrders(); // Refresh the list
-      } catch (err) {
-        const errorMessage = err.response?.data?.message || 'Failed to delete order.';
-        setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }
+  const handleDelete = (orderId) => {
+    setDeleteId(orderId);
+    setConfirmOpen(true);
+  };
+  const confirmDelete = async () => {
+    setConfirmLoading(true);
+    try {
+      await deleteOrder(deleteId);
+      toast.success('Order deleted successfully!', { position: 'top-right', autoClose: 3000 });
+      fetchOrders();
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Failed to delete order.';
+      setError(errorMessage);
+      toast.error(errorMessage, { position: 'top-right', autoClose: 5000 });
+    } finally {
+      setConfirmLoading(false);
+      setConfirmOpen(false);
+      setDeleteId(null);
     }
   };
 
@@ -296,6 +293,16 @@ const AdminOrderList = () => {
           <p style={styles.emptyText}>Orders from customers will appear here once they start shopping.</p>
         </div>
       )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Delete Order?"
+        message="Are you sure you want to delete this order? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={confirmLoading}
+        onConfirm={confirmDelete}
+        onCancel={() => { setConfirmOpen(false); setDeleteId(null); }}
+      />
     </div>
   );
 };

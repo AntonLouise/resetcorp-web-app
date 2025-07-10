@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllUsers, deleteUser } from '../../services/adminService';
 import { toast } from 'react-toastify';
+import ConfirmModal from '../../components/ConfirmModal';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-user-list-hover-effects')) {
@@ -41,6 +42,9 @@ const AdminUserList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -58,31 +62,24 @@ const AdminUserList = () => {
     }
   };
 
-  const handleDelete = async (userId) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      try {
-        await deleteUser(userId);
-        toast.success('User deleted successfully!', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        fetchUsers(); // Refresh the list
-      } catch (err) {
-        const errorMessage = 'Failed to delete user.';
-        setError(errorMessage);
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }
+  const handleDelete = (userId) => {
+    setDeleteId(userId);
+    setConfirmOpen(true);
+  };
+  const confirmDelete = async () => {
+    setConfirmLoading(true);
+    try {
+      await deleteUser(deleteId);
+      toast.success('User deleted successfully!', { position: 'top-right', autoClose: 3000 });
+      fetchUsers();
+    } catch (err) {
+      const errorMessage = 'Failed to delete user.';
+      setError(errorMessage);
+      toast.error(errorMessage, { position: 'top-right', autoClose: 5000 });
+    } finally {
+      setConfirmLoading(false);
+      setConfirmOpen(false);
+      setDeleteId(null);
     }
   };
 
@@ -235,6 +232,16 @@ const AdminUserList = () => {
           </Link>
         </div>
       )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Delete User?"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={confirmLoading}
+        onConfirm={confirmDelete}
+        onCancel={() => { setConfirmOpen(false); setDeleteId(null); }}
+      />
     </div>
   );
 };
