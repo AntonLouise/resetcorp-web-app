@@ -191,3 +191,7 @@ client/.vite/deps/chunk-G3PMV62Z.js
 client/.vite/deps/chunk-G3PMV62Z.js.map
 client/.vite/deps/chunk-GQIAEJ4M.js
 client/.vite/deps/chunk-GQIAEJ4M.js.map
+
+# Ignore only root-level public folder, but allow client/public
+/public
+!client/public/
