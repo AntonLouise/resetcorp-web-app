@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useNavigate } from 'react-router-dom';
 import { getDashboardStats } from '../services/adminService';
 import { toast } from 'react-toastify';
+import api from '../services/api';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -180,6 +181,8 @@ const AdminDashboard = () => {
 
   const handleRefreshClick = () => {
     setIsRefreshing(true);
+    // Clear dashboard cache to force fresh data
+    api.clearCache('/admin/dashboard/stats');
     fetchStats();
     // Remove the clicked class after animation completes
     setTimeout(() => setIsRefreshing(false), 600);

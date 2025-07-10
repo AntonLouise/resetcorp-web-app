@@ -163,3 +163,22 @@ exports.cancelOrder = async (req, res) => {
     res.status(500).json({ message: 'Failed to cancel order' });
   }
 };
+
+// Admin: Delete order
+exports.deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    // Only admin can delete orders
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Not authorized to delete orders' });
+    }
+
+    await Order.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Order deleted successfully' });
+  } catch (err) {
+    console.error('Failed to delete order:', err);
+    res.status(500).json({ message: 'Failed to delete order' });
+  }
+};

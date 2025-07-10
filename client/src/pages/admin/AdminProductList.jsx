@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getAllProducts, deleteProduct } from '../../services/adminService';
+import { toast } from 'react-toastify';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-product-list-hover-effects')) {
@@ -68,10 +69,27 @@ const AdminProductList = () => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
         await deleteProduct(productId);
+        toast.success('Product deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         // Refresh list after delete
         fetchProducts();
       } catch (err) {
-        setError('Failed to delete product.');
+        const errorMessage = 'Failed to delete product.';
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   };

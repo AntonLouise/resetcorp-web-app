@@ -10,6 +10,10 @@ if (typeof document !== 'undefined' && !document.getElementById('product-detail-
   const style = document.createElement('style');
   style.id = 'product-detail-hover-effects';
   style.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     .product-thumbnail {
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
@@ -146,13 +150,33 @@ const ProductDetail = () => {
     return (
       <div style={{ 
         display: 'flex', 
+        flexDirection: 'column',
         justifyContent: 'center', 
         alignItems: 'center', 
         minHeight: '60vh',
-        fontSize: '18px',
-        color: '#333'
+        background: 'white',
+        borderRadius: '10px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        margin: '20px',
+        padding: '3rem 0'
       }}>
-        Loading product details...
+        <div style={{
+          width: '50px',
+          height: '50px',
+          border: '4px solid #e8f5e8',
+          borderTop: '4px solid #28a745',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          marginBottom: '1rem'
+        }}></div>
+        <p style={{
+          color: '#28a745',
+          fontSize: '18px',
+          fontWeight: '500',
+          margin: 0
+        }}>
+          Loading product details...
+        </p>
       </div>
     );
   }

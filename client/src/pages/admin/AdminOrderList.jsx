@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllOrders, updateOrderStatus } from '../../services/adminService';
+import { getAllOrders, updateOrderStatus, deleteOrder } from '../../services/adminService';
+import { toast } from 'react-toastify';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-order-list-hover-effects')) {
@@ -53,10 +54,55 @@ const AdminOrderList = () => {
     try {
       await updateOrderStatus(orderId, status);
       setError(null); // Clear previous errors on success
+      toast.success(`Order status updated to ${status.replace('_', ' ')}!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       fetchOrders();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update order status.');
+      const errorMessage = err.response?.data?.message || 'Failed to update order status.';
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       console.error(err);
+    }
+  };
+
+  const handleDelete = async (orderId) => {
+    if (window.confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+      try {
+        await deleteOrder(orderId);
+        toast.success('Order deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        fetchOrders(); // Refresh the list
+      } catch (err) {
+        const errorMessage = err.response?.data?.message || 'Failed to delete order.';
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     }
   };
 
@@ -186,32 +232,34 @@ const AdminOrderList = () => {
               </div>
             </div>
 
-            <div style={styles.orderInfo}>
-              <div style={styles.infoRow}>
-                <span style={styles.infoLabel}>Customer:</span>
-                <span style={styles.infoValue}>{order.user?.name || 'N/A'}</span>
+            <div style={styles.orderContent}>
+              <div style={styles.orderInfo}>
+                <div style={styles.infoRow}>
+                  <span style={styles.infoLabel}>Customer:</span>
+                  <span style={styles.infoValue}>{order.user?.name || 'N/A'}</span>
+                </div>
+                <div style={styles.infoRow}>
+                  <span style={styles.infoLabel}>Date:</span>
+                  <span style={styles.infoValue}>{formatDate(order.createdAt)}</span>
+                </div>
+                <div style={styles.infoRow}>
+                  <span style={styles.infoLabel}>Total:</span>
+                  <span style={styles.totalAmount}>₱{order.totalAmount?.toLocaleString()}</span>
+                </div>
               </div>
-              <div style={styles.infoRow}>
-                <span style={styles.infoLabel}>Date:</span>
-                <span style={styles.infoValue}>{formatDate(order.createdAt)}</span>
-              </div>
-              <div style={styles.infoRow}>
-                <span style={styles.infoLabel}>Total:</span>
-                <span style={styles.totalAmount}>₱{order.totalAmount?.toLocaleString()}</span>
-              </div>
-            </div>
 
-            <div style={styles.orderItems}>
-              <span style={styles.itemsLabel}>Items:</span>
-              <div style={styles.itemsList}>
-                {order.items?.slice(0, 3).map((item, index) => (
-                  <span key={index} style={styles.item}>
-                    {item.product?.name || 'Unknown Product'} x{item.quantity}
-                  </span>
-                ))}
-                {order.items?.length > 3 && (
-                  <span style={styles.moreItems}>+{order.items.length - 3} more</span>
-                )}
+              <div style={styles.orderItems}>
+                <span style={styles.itemsLabel}>Items:</span>
+                <div style={styles.itemsList}>
+                  {order.items?.slice(0, 3).map((item, index) => (
+                    <span key={index} style={styles.item}>
+                      {item.product?.name || 'Unknown Product'} x{item.quantity}
+                    </span>
+                  ))}
+                  {order.items?.length > 3 && (
+                    <span style={styles.moreItems}>+{order.items.length - 3} more</span>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -227,6 +275,14 @@ const AdminOrderList = () => {
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
               </select>
+              <button 
+                onClick={() => handleDelete(order._id)} 
+                style={styles.deleteButton}
+                className="admin-delete-button"
+                title="Delete Order"
+              >
+                <span style={styles.deleteIcon} className="material-symbols-outlined">delete</span>
+              </button>
             </div>
           </div>
         ))}
@@ -335,7 +391,10 @@ const styles = {
     padding: '1.5rem',
     boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
     transition: 'all 0.3s ease',
-    border: '1px solid rgba(0,0,0,0.05)'
+    border: '1px solid rgba(0,0,0,0.05)',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '320px'
   },
   orderHeader: {
     display: 'flex',
@@ -375,8 +434,15 @@ const styles = {
   statusText: {
     textTransform: 'capitalize'
   },
+  orderContent: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1.5rem',
+    marginBottom: '2rem'
+  },
   orderInfo: {
-    marginBottom: '1.5rem'
+    marginBottom: 0
   },
   infoRow: {
     display: 'flex',
@@ -400,10 +466,10 @@ const styles = {
     fontWeight: '700'
   },
   orderItems: {
-    marginBottom: '1.5rem',
     padding: '1rem',
     background: '#f8f9fa',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    flex: 1
   },
   itemsLabel: {
     fontSize: '0.9rem',
@@ -432,10 +498,15 @@ const styles = {
   },
   orderActions: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '1rem',
+    marginTop: 'auto',
+    paddingTop: '1.5rem',
+    borderTop: '1px solid #f1f3f4'
   },
   statusSelect: {
-    width: '100%',
+    flex: 1,
     padding: '0.75rem',
     borderRadius: '8px',
     border: '1px solid #e9ecef',
@@ -445,6 +516,23 @@ const styles = {
     color: '#2c3e50',
     cursor: 'pointer',
     transition: 'all 0.3s ease'
+  },
+  deleteButton: {
+    background: '#dc3545',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    padding: '0.75rem',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: '48px',
+    height: '48px'
+  },
+  deleteIcon: {
+    fontSize: '1.2rem'
   },
   emptyState: {
     textAlign: 'center',
@@ -530,6 +618,11 @@ styleSheet.textContent = `
     outline: none;
     border-color: #28a745;
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  }
+  
+  .admin-delete-button:hover {
+    background: #c82333 !important;
+    transform: scale(1.05);
   }
 `;
 document.head.appendChild(styleSheet);

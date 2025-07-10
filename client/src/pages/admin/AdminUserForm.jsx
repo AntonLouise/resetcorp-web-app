@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUser } from '../../services/adminService';
+import { toast } from 'react-toastify';
 
 const AdminUserForm = () => {
   const [user, setUser] = useState({ name: '', email: '', role: '' });
@@ -39,9 +40,31 @@ const AdminUserForm = () => {
     
     try {
       await updateUser(id, user);
-      navigate('/admin/users');
+      console.log('User updated successfully, showing toast...');
+      toast.success('User updated successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      // Add a small delay to ensure toast is displayed before navigation
+      setTimeout(() => {
+        navigate('/admin/users');
+      }, 500);
     } catch (err) {
-      setError('Failed to update user.');
+      const errorMessage = 'Failed to update user.';
+      setError(errorMessage);
+      console.log('User update failed, showing error toast...');
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setSubmitting(false);
     }
   };
@@ -191,6 +214,16 @@ const AdminUserForm = () => {
             </button>
           </div>
         </form>
+        
+        {/* Loading Overlay */}
+        {submitting && (
+          <div style={styles.loadingOverlay}>
+            <div style={styles.loadingContent}>
+              <div style={styles.loadingSpinner}></div>
+              <p style={styles.loadingText}>Updating user information...</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -334,6 +367,39 @@ const styles = {
     cursor: 'pointer',
     boxShadow: 'none',
     transition: 'background 0.2s',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  loadingContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '1rem',
+  },
+  loadingSpinner: {
+    width: '50px',
+    height: '50px',
+    border: '4px solid #e8f5e8',
+    borderTop: '4px solid #28a745',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+  },
+  loadingText: {
+    color: '#28a745',
+    fontSize: '1.1rem',
+    fontWeight: '500',
+    margin: 0,
   },
 };
 

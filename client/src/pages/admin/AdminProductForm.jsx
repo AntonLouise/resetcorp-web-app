@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, updateProduct, getProductById } from '../../services/adminService';
 import { getCategories, createCategory } from '../../services/categoryService';
 import uploadService from '../../services/uploadService';
+import { toast } from 'react-toastify';
 
 const AdminProductForm = () => {
   // Step management
@@ -289,8 +290,25 @@ const AdminProductForm = () => {
       setCategory(newCategory._id);
       setShowNewCategoryForm(false);
       setNewCategoryName('');
+      toast.success('Category created successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (err) {
-      setError('Failed to create category');
+      const errorMessage = 'Failed to create category';
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } finally {
       setCreatingCategory(false);
     }
@@ -444,13 +462,38 @@ const AdminProductForm = () => {
 
       if (id) {
         await updateProduct(id, productData);
+        toast.success('Product updated successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         navigate('/admin/products');
       } else {
         await createProduct(productData);
+        toast.success('Product created successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         navigate('/admin/products');
       }
     } catch (err) {
-      setError(err.message || 'The operation failed. Please check the fields.');
+      const errorMessage = err.message || 'The operation failed. Please check the fields.';
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setLoading(false);
     }
   };

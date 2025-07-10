@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllUsers, deleteUser } from '../../services/adminService';
+import { toast } from 'react-toastify';
 
 // Inject hover effect styles
 if (typeof document !== 'undefined' && !document.getElementById('admin-user-list-hover-effects')) {
@@ -61,9 +62,26 @@ const AdminUserList = () => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         await deleteUser(userId);
+        toast.success('User deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         fetchUsers(); // Refresh the list
       } catch (err) {
-        setError('Failed to delete user.');
+        const errorMessage = 'Failed to delete user.';
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   };
