@@ -396,7 +396,7 @@ const Home = () => {
     {
       heading: 'What is Collapsible?',
       tagline: 'Portable, Smart, Sustainable.',
-      text: 'It’s a foldable solar power station that turns sunlight into electricity. Easy to move, quick to set up, perfect for powering farms, ponds, or off-grid sites.'
+      text: 'Collapsible is a foldable solar power station that turns sunlight into electricity. Easy to move, quick to set up, perfect for powering farms, ponds, or off-grid sites.'
     },
     {
       heading: 'Why Choose Collapsible?',
