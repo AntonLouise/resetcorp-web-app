@@ -53,19 +53,19 @@ const featuredSlides = [
   {
     title: 'Collapsible Solar Power Station',
     subtitle: 'Efficient, portable, and sustainable energy for your needs.',
-    image: '/removed bg product 1.png',
+    image: '/featured1.png',
     cards: [],
   },
   {
     title: 'Collapsible Solar Power Station',
     subtitle: 'Reliable solar solutions for every environment.',
-    image: '/removed bg product 2.png',
+    image: '/featured2.png',
     cards: [],
   },
   {
     title: 'Collapsible Solar Power Station',
     subtitle: 'Innovative design for modern energy challenges.',
-    image: '/removed bg product 3.png',
+    image: '/featured3.png',
     cards: [],
   },
 ];
