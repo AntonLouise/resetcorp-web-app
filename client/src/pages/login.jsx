@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { login } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -10,8 +10,15 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    // Trigger entrance animation after component mounts
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,17 +85,23 @@ const Login = () => {
       margin: 0,
       flexDirection: 'column',
     }}>
-      <div className="login-split-card" style={{
-        width: '92vw',
-        maxWidth: 800,
-        minHeight: 420,
-        background: '#fff',
-        borderRadius: 18,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
-        display: 'flex',
-        flexDirection: 'row',
-        overflow: 'hidden',
-      }}>
+      <div 
+        className="login-split-card" 
+        style={{
+          width: '92vw',
+          maxWidth: 800,
+          minHeight: 420,
+          background: '#fff',
+          borderRadius: 18,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+          display: 'flex',
+          flexDirection: 'row',
+          overflow: 'hidden',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
+          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        }}
+      >
         {/* Left side: Illustration and Welcome */}
         <div style={{
           flex: 1,
@@ -102,55 +115,90 @@ const Login = () => {
           padding: '40px',
           overflow: 'hidden',
         }}>
-          {/* Geometric shapes for modern design */}
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            width: '80px',
-            height: '80px',
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.25)',
-          }}></div>
+          {/* Animated geometric shapes */}
+          <div 
+            className="floating-shape"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.25)',
+              animation: 'float 8s ease-in-out infinite',
+              animationDelay: '0s',
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.8s ease',
+            }}
+          ></div>
           
-          <div style={{
-            position: 'absolute',
-            bottom: '30px',
-            left: '30px',
-            width: '60px',
-            height: '60px',
-            background: 'rgba(255, 255, 255, 0.2)',
-            transform: 'rotate(45deg)',
-          }}></div>
+          <div 
+            className="floating-shape"
+            style={{
+              position: 'absolute',
+              bottom: '30px',
+              left: '30px',
+              width: '60px',
+              height: '60px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              transform: 'rotate(45deg)',
+              animation: 'float-rot45 8s ease-in-out infinite',
+              animationDelay: '2s',
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.8s ease',
+            }}
+          ></div>
           
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            width: '40px',
-            height: '40px',
-            background: 'rgba(255, 255, 255, 0.3)',
-            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-          }}></div>
+          <div 
+            className="floating-shape"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: '10px',
+              width: '40px',
+              height: '40px',
+              background: 'rgba(255, 255, 255, 0.3)',
+              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+              animation: 'float 8s ease-in-out infinite',
+              animationDelay: '4s',
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.8s ease',
+            }}
+          ></div>
           
-          <div style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '40px',
-            width: '20px',
-            height: '100px',
-            background: 'rgba(255, 255, 255, 0.18)',
-            borderRadius: '10px',
-            transform: 'rotate(-15deg)',
-          }}></div>
+          <div 
+            className="floating-shape"
+            style={{
+              position: 'absolute',
+              bottom: '20px',
+              right: '40px',
+              width: '20px',
+              height: '100px',
+              background: 'rgba(255, 255, 255, 0.18)',
+              borderRadius: '10px',
+              transform: 'rotate(-15deg)',
+              animation: 'float-rot-15 8s ease-in-out infinite',
+              animationDelay: '1s',
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.8s ease',
+            }}
+          ></div>
           
-          <div style={{
-            position: 'relative',
-            zIndex: 2,
-            color: '#fff',
-            textShadow: '0 2px 8px rgba(0,0,0,0.18)',
-            textAlign: 'left',
-          }}>
+          <div 
+            className="welcome-text"
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              color: '#fff',
+              textShadow: '0 2px 8px rgba(0,0,0,0.18)',
+              textAlign: 'left',
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateX(0)' : 'translateX(-30px)',
+              transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: '0.3s',
+            }}
+          >
             <div style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: 12, lineHeight: 1.2 }}>
               Welcome to<br />
               <span style={{ color: '#000', fontSize: '2.2rem' }}>RESET Corp.</span>
@@ -178,15 +226,82 @@ const Login = () => {
           justifyContent: 'center',
           padding: '32px 24px',
         }}>
-          <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: 18 }}>
-            <h2 style={{ textAlign: 'center', fontWeight: 600, fontSize: '1.5rem', marginBottom: 12, color: '#111' }}>Login</h2>
+          <form 
+            onSubmit={handleSubmit} 
+            className="login-form"
+            style={{ 
+              width: '100%', 
+              maxWidth: 320, 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: 18,
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
+              transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: '0.5s',
+            }}
+          >
+            <h2 
+              className="form-title"
+              style={{ 
+                textAlign: 'center', 
+                fontWeight: 600, 
+                fontSize: '1.5rem', 
+                marginBottom: 12, 
+                color: '#111',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(-20px)',
+                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transitionDelay: '0.7s',
+              }}
+            >
+              Login
+            </h2>
             {location.state?.redirected && (
-              <p style={{ color: '#0099ff', textAlign: 'center', margin: 0, marginBottom: 8 }}>
+              <p 
+                className="redirect-message"
+                style={{ 
+                  color: '#0099ff', 
+                  textAlign: 'center', 
+                  margin: 0, 
+                  marginBottom: 8,
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(-10px)',
+                  transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transitionDelay: '0.8s',
+                }}
+              >
                 Please log in to access that page.
               </p>
             )}
-            {error && <p style={{ color: 'red', textAlign: 'center', margin: 0 }}>{error}</p>}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {error && (
+              <p 
+                className="error-message"
+                style={{ 
+                  color: 'red', 
+                  textAlign: 'center', 
+                  margin: 0,
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(-10px)',
+                  transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transitionDelay: '0.8s',
+                }}
+              >
+                {error}
+              </p>
+            )}
+            <div 
+              className="form-field"
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 10,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transitionDelay: '0.9s',
+              }}
+            >
               <label htmlFor="email" style={{ fontWeight: 500, fontSize: 14, marginBottom: 2, color: '#111' }}>Email address</label>
               <input
                 id="email"
@@ -208,12 +323,24 @@ const Login = () => {
                   color: '#222',
                   boxSizing: 'border-box',
                   cursor: isLoading ? 'not-allowed' : 'text',
+                  transition: 'all 0.3s ease',
                 }}
                 autoComplete="email"
                 required
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div 
+              className="form-field"
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 6,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transitionDelay: '1.0s',
+              }}
+            >
               <label htmlFor="password" style={{ fontWeight: 500, fontSize: 14, marginBottom: 2, color: '#111' }}>Password</label>
               <div style={{ position: 'relative', width: '100%' }}>
                 <input
@@ -235,6 +362,7 @@ const Login = () => {
                     color: '#222',
                     boxSizing: 'border-box',
                     cursor: isLoading ? 'not-allowed' : 'text',
+                    transition: 'all 0.3s ease',
                   }}
                   autoComplete="current-password"
                   required
@@ -268,6 +396,7 @@ const Login = () => {
                     display: 'flex',
                     alignItems: 'center',
                     opacity: isLoading ? 0.5 : 1,
+                    transition: 'all 0.3s ease',
                   }}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   tabIndex={isLoading ? -1 : 0}
@@ -280,6 +409,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
+              className="login-button"
               style={{
                 width: '100%',
                 background: isLoading ? '#666' : '#111',
@@ -292,11 +422,14 @@ const Login = () => {
                 marginTop: 8,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
                 cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'background 0.18s',
+                transition: 'all 0.3s ease',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                animation: isVisible ? 'buttonPulse 2s ease-in-out infinite' : 'none',
               }}
               onMouseOver={e => !isLoading && (e.currentTarget.style.background = '#333')}
               onMouseOut={e => !isLoading && (e.currentTarget.style.background = '#111')}
@@ -313,7 +446,19 @@ const Login = () => {
               )}
               {isLoading ? 'Signing in...' : 'Login'}
             </button>
-            <div style={{ textAlign: 'center', marginTop: 10, fontSize: 15, color: '#111' }}>
+            <div 
+              className="register-link"
+              style={{ 
+                textAlign: 'center', 
+                marginTop: 10, 
+                fontSize: 15, 
+                color: '#111',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transitionDelay: '1.2s',
+              }}
+            >
               Don't have an account?{' '}
               <span 
                 onClick={() => !isLoading && navigate('/register')} 
@@ -323,6 +468,7 @@ const Login = () => {
                   fontWeight: 500, 
                   cursor: isLoading ? 'not-allowed' : 'pointer',
                   opacity: isLoading ? 0.5 : 1,
+                  transition: 'all 0.3s ease',
                 }}
               >
                 Create free account?
@@ -333,7 +479,19 @@ const Login = () => {
       </div>
 
       {/* Back to Home link at lower left of the card */}
-      <div style={{ width: '100%', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
+      <div 
+        className="back-link"
+        style={{ 
+          width: '100%', 
+          maxWidth: 800, 
+          margin: '0 auto', 
+          position: 'relative',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transitionDelay: '1.4s',
+        }}
+      >
         <div style={{ position: 'absolute', left: 0, bottom: -36 }}>
           <Link to="/" style={{ color: '#888', textDecoration: 'none', fontWeight: 400, fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: 'middle' }}>arrow_back</span>
@@ -357,6 +515,49 @@ const Login = () => {
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-15px); }
+        }
+        @keyframes float-rot45 {
+          0%, 100% { transform: translateY(0px) rotate(45deg); }
+          50% { transform: translateY(-15px) rotate(45deg); }
+        }
+        @keyframes float-rot-15 {
+          0%, 100% { transform: translateY(0px) rotate(-15deg); }
+          50% { transform: translateY(-15px) rotate(-15deg); }
+        }
+
+        @keyframes buttonPulse {
+          0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+          50% { box-shadow: 0 4px 16px rgba(0,0,0,0.20); }
+        }
+
+        .floating-shape {
+          transition: all 0.3s ease;
+        }
+
+        .floating-shape:hover {
+          transform: scale(1.1) !important;
+          background: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .login-form input:focus {
+          border-color: #0099ff !important;
+          box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.2) !important;
+          transform: translateY(-1px) !important;
+        }
+
+        .login-button:hover {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.20) !important;
+        }
+
+        .register-link span:hover {
+          color: #007acc !important;
+          transform: scale(1.05) !important;
         }
         
         @media (max-width: 800px) {
