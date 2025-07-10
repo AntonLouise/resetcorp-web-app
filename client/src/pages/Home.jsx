@@ -439,14 +439,14 @@ const Home = () => {
 
 {(() => {
   const images = [
-    '/Tingalabak,Batangas_edited.jpg',
-    '/Sto Tomas,Batangas_edited.jpg',
-    '/Sabang,Puerto Galera2_edited.jpg',
-    '/Banaba,Batangas_edited.jpg',
-    '/Sabang,Puerto Galera1_edited.jpg',
-    '/Paranaque,Manila_edited.jpg',
-    '/Cuta,Batangas_edited.jpg',
-    '/Alangilan,Batangas_edited.jpeg',
+    '/Tinga Labak,Batangas_edited.png',
+    '/Sto Tomas,Batangas_edited.png',
+    '/Sabang,Puerto Galera2_edited.png',
+    '/Banaba,Batangas_edited.png',
+    '/Sabang, Puerto Galera1_edited.png',
+    '/Paranaque,Manila_edited.png',
+    '/Cuta,Batangas_edited.png',
+    '/Alangilan,Batangas_edited.png',
   ];
 
   const heading = 'Find your dream aesthetic';
@@ -552,7 +552,7 @@ const Home = () => {
               {/* Overlay with location info */}
               {(() => {
                 // Extract filename, remove leading slash and extension
-                const filename = src.split('/').pop().replace(/_edited\.(jpg|jpeg)/i, '');
+                const filename = src.split('/').pop().replace(/_edited\.(jpg|jpeg|png)/i, '');
                 // Split by comma to get place and district
                 let [place, district] = filename.split(',').map(s => s.trim());
                 // Remove trailing numbers from district (e.g., 'Puerto Galera1' -> 'Puerto Galera')
