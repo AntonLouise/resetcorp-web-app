@@ -11,7 +11,7 @@ const BACKEND_URL = 'http://localhost:5000/';
 
 const styles = {
   bgGreen: {
-    background: 'linear-gradient(135deg, #e8fbe8 0%, #f1fbe9 50%, #f6fff6 100%)',
+    background: 'linear-gradient(180deg, #b2f0e6 0%, #d0f7c6 70%)',
     paddingTop: '12px',
     paddingBottom: '12px',
     fontFamily: 'Poppins, sans-serif',
