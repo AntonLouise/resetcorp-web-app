@@ -114,26 +114,6 @@ const ServiceDetailModal = ({ isOpen, onClose, service }) => {
             >
               Contact Us <FaArrowRight />
             </button>
-            <button
-              onClick={() => { onClose(); navigate('/quote'); }}
-              style={{
-                padding: '0.75rem 1.5rem',
-                background: 'transparent',
-                color: '#28a745',
-                border: '2px solid #28a745',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                fontWeight: 'bold',
-                transition: 'background 0.2s, color 0.2s, border-color 0.2s'
-              }}
-              onMouseOver={e => { e.currentTarget.style.background = '#28a745'; e.currentTarget.style.color = '#fff'; }}
-              onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#28a745'; }}
-            >
-              Request Quote <FaArrowRight />
-            </button>
           </div>
         </div>
       </div>
