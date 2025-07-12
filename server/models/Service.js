@@ -15,11 +15,22 @@ const serviceSchema = new mongoose.Schema({
   }],
   icon: {
     type: String,
-    default: 'default-icon'
+    default: 'build'
   },
   isActive: {
     type: Boolean,
     default: true
+  },
+  whyChoose: [{
+    type: String
+  }],
+  ctaText: {
+    type: String,
+    default: ''
+  },
+  ctaButtonText: {
+    type: String,
+    default: 'Contact Us'
   }
 }, {
   timestamps: true

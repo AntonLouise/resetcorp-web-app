@@ -130,6 +130,29 @@ const AdminDashboard = () => {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
+        .quick-actions-responsive {
+          display: flex !important;
+          flex-wrap: nowrap;
+          gap: 1.5rem;
+          justify-content: center;
+        }
+        .quick-action-btn {
+          flex: 1 1 0;
+          min-width: 0;
+          max-width: 260px;
+        }
+        @media (max-width: 900px) {
+          .quick-actions-responsive {
+            flex-direction: column !important;
+            flex-wrap: wrap;
+            align-items: stretch;
+            gap: 1rem;
+          }
+          .quick-action-btn {
+            max-width: 100%;
+            width: 100%;
+          }
+        }
       `;
       document.head.appendChild(styleSheet);
     }
@@ -467,7 +490,7 @@ const AdminDashboard = () => {
       {/* Quick Actions */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Quick Actions</h2>
-        <div style={styles.quickActions}>
+        <div style={styles.quickActions} className="quick-actions-responsive">
           <button 
             style={styles.actionButton}
             className="quick-action-btn"
@@ -500,6 +523,17 @@ const AdminDashboard = () => {
           >
             <span style={styles.actionIcon} className="material-symbols-outlined action-icon">group</span>
             Manage Users
+          </button>
+          <button 
+            style={styles.actionButton}
+            className="quick-action-btn"
+            onClick={() => {
+              navigate('/admin/services');
+              window.scrollTo(0, 0);
+            }}
+          >
+            <span style={styles.actionIcon} className="material-symbols-outlined action-icon">build</span>
+            Manage Services
           </button>
         </div>
       </div>
@@ -741,9 +775,10 @@ const styles = {
   section: {
     background: 'white',
     borderRadius: '16px',
-    padding: '2rem',
+    padding: '2rem 1.5rem', // edge-to-edge with a little space
     boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-    border: '1px solid rgba(0,0,0,0.05)'
+    border: '1px solid rgba(0,0,0,0.05)',
+    width: '100%'
   },
   sectionTitle: {
     fontSize: '1.5rem',
@@ -752,17 +787,18 @@ const styles = {
     marginBottom: '1.5rem'
   },
   quickActions: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1.5rem',
-    maxWidth: '800px',
-    margin: '0 auto'
+    display: 'flex',
+    flexWrap: 'nowrap',
+    gap: '0.5rem',
+    width: '100%'
   },
   actionButton: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '1rem 1.5rem',
+    flex: 1,
+    minWidth: 0,
+    padding: '1rem 0', // remove side padding
     background: '#28a745',
     borderRadius: '12px',
     border: 'none',

@@ -74,11 +74,18 @@ const ServiceDetailModal = ({ isOpen, onClose, service }) => {
             borderLeft: '4px solid #28a745'
           }}>
             <ul style={{ margin: 0, paddingLeft: '1.5rem', color: '#222' }}>
-              <li style={{ marginBottom: '0.5rem', color: '#222' }}>Expert team with specialized knowledge</li>
-              <li style={{ marginBottom: '0.5rem', color: '#222' }}>Proven track record of successful projects</li>
-              <li style={{ marginBottom: '0.5rem', color: '#222' }}>Customized solutions for your specific needs</li>
-              <li style={{ marginBottom: '0.5rem', color: '#222' }}>Ongoing support and maintenance</li>
-              <li style={{ color: '#222' }}>Competitive pricing and transparent quotes</li>
+              {(service.whyChoose && service.whyChoose.length > 0
+                ? service.whyChoose
+                : [
+                    'Expert team with specialized knowledge',
+                    'Proven track record of successful projects',
+                    'Customized solutions for your specific needs',
+                    'Ongoing support and maintenance',
+                    'Competitive pricing and transparent quotes'
+                  ]
+              ).map((reason, idx) => (
+                <li key={idx} style={{ marginBottom: '0.5rem', color: '#222' }}>{reason}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -91,7 +98,7 @@ const ServiceDetailModal = ({ isOpen, onClose, service }) => {
         }}>
           <h4 style={{ color: '#2c3e50', marginBottom: '1rem' }}>Ready to Get Started?</h4>
           <p style={{ color: '#7f8c8d', marginBottom: '1rem' }}>
-            Contact our team to discuss your project requirements and get a customized solution.
+            {service.ctaText || 'Contact our team to discuss your project requirements and get a customized solution.'}
           </p>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <button
@@ -112,7 +119,7 @@ const ServiceDetailModal = ({ isOpen, onClose, service }) => {
               onMouseOver={e => e.currentTarget.style.background = '#218838'}
               onMouseOut={e => e.currentTarget.style.background = '#28a745'}
             >
-              Contact Us <FaArrowRight />
+              {service.ctaButtonText || 'Contact Us'} <FaArrowRight />
             </button>
           </div>
         </div>

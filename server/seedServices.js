@@ -14,8 +14,17 @@ const defaultServices = [
       'Grid Integration Services',
       '24/7 Monitoring & Support'
     ],
-    icon: 'solar',
-    isActive: true
+    icon: 'solar_power',
+    isActive: true,
+    whyChoose: [
+      'Expert team with specialized knowledge',
+      'Proven track record of successful projects',
+      'Customized solutions for your specific needs',
+      'Ongoing support and maintenance',
+      'Competitive pricing and transparent quotes'
+    ],
+    ctaText: 'Contact our team to discuss your project requirements and get a customized solution.',
+    ctaButtonText: 'Contact Us'
   },
   {
     name: 'Fabrication and Installation',
@@ -28,8 +37,17 @@ const defaultServices = [
       'On-site Installation Services',
       'Maintenance & Repair'
     ],
-    icon: 'fabrication',
-    isActive: true
+    icon: 'build',
+    isActive: true,
+    whyChoose: [
+      'Expert team with specialized knowledge',
+      'Proven track record of successful projects',
+      'Customized solutions for your specific needs',
+      'Ongoing support and maintenance',
+      'Competitive pricing and transparent quotes'
+    ],
+    ctaText: 'Contact our team to discuss your project requirements and get a customized solution.',
+    ctaButtonText: 'Contact Us'
   },
   {
     name: 'Research',
@@ -42,8 +60,17 @@ const defaultServices = [
       'Industry Partnerships',
       'Patent Development'
     ],
-    icon: 'research',
-    isActive: true
+    icon: 'science',
+    isActive: true,
+    whyChoose: [
+      'Expert team with specialized knowledge',
+      'Proven track record of successful projects',
+      'Customized solutions for your specific needs',
+      'Ongoing support and maintenance',
+      'Competitive pricing and transparent quotes'
+    ],
+    ctaText: 'Contact our team to discuss your project requirements and get a customized solution.',
+    ctaButtonText: 'Contact Us'
   }
 ];
 

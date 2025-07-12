@@ -3,51 +3,7 @@ import ContactModal from '../components/ContactModal';
 import QuoteModal from '../components/QuoteModal';
 import ServiceDetailModal from '../components/ServiceDetailModal';
 import { useNavigate } from 'react-router-dom';
-
-const defaultServices = [
-  {
-    _id: '1',
-    name: 'Sustainable Energy Solutions',
-    description: 'Comprehensive renewable energy solutions including solar panel installation, wind energy systems, and energy storage solutions. We help businesses and homeowners transition to clean, sustainable energy sources.',
-    features: [
-      'Solar Panel Installation & Maintenance',
-      'Wind Energy Systems',
-      'Energy Storage Solutions',
-      'Energy Efficiency Audits',
-      'Grid Integration Services',
-      '24/7 Monitoring & Support'
-    ],
-    materialIcon: 'solar_power'
-  },
-  {
-    _id: '2',
-    name: 'Fabrication and Installation',
-    description: 'Professional fabrication and installation services for industrial equipment, custom machinery, and specialized components. Our expert team ensures precision engineering and reliable installation.',
-    features: [
-      'Custom Machinery Fabrication',
-      'Industrial Equipment Installation',
-      'Precision Engineering',
-      'Quality Control & Testing',
-      'On-site Installation Services',
-      'Maintenance & Repair'
-    ],
-    materialIcon: 'build'
-  },
-  {
-    _id: '3',
-    name: 'Research',
-    description: 'Cutting-edge research and development services in renewable energy technologies, sustainable materials, and innovative engineering solutions. We collaborate with academic institutions and industry partners.',
-    features: [
-      'Renewable Energy Research',
-      'Sustainable Materials Development',
-      'Technology Innovation',
-      'Academic Collaboration',
-      'Industry Partnerships',
-      'Patent Development'
-    ],
-    materialIcon: 'science'
-  }
-];
+import { serviceService } from '../services/serviceService';
 
 const featuredSlides = [
   {
@@ -85,6 +41,9 @@ const Home = () => {
   const [touchEndX, setTouchEndX] = useState(null);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
   const [areStatsVisible, setAreStatsVisible] = useState(false);
+  const [services, setServices] = useState([]);
+  const [servicesLoading, setServicesLoading] = useState(true);
+  const [servicesError, setServicesError] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsHeroVisible(true), 100);
@@ -93,6 +52,22 @@ const Home = () => {
       clearTimeout(timer);
       clearTimeout(statsTimer);
     };
+  }, []);
+
+  useEffect(() => {
+    // Fetch services from backend
+    const fetchServices = async () => {
+      setServicesLoading(true);
+      try {
+        const data = await serviceService.getServices();
+        setServices(data);
+      } catch (err) {
+        setServicesError('Failed to load services.');
+      } finally {
+        setServicesLoading(false);
+      }
+    };
+    fetchServices();
   }, []);
 
   // Animated stat numbers
@@ -178,6 +153,13 @@ const Home = () => {
     }, 250);
   };
   const handleImageClick = () => setShowSpecs((prev) => !prev);
+
+  // Add icon mapping for Material Symbols
+  const iconMap = {
+    solar_power: 'solar_power',
+    build: 'build',
+    science: 'science'
+  };
 
   return (
     <div className="homepage-root">
@@ -684,10 +666,73 @@ const Home = () => {
         position: 'relative',
       }}>
         <h2 className="services-section-heading" style={{textAlign: 'center', color: '#111'}}>Our Services</h2>
+        <style>{`
+          .services-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.2rem;
+            justify-content: center;
+            margin: 2.5rem 0 1.5rem 0;
+          }
+          .service-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 12px rgba(40,167,69,0.08);
+            padding: 2.2rem 2rem 1.5rem 2rem;
+            width: 340px;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+          }
+          .service-card:hover {
+            box-shadow: 0 8px 32px rgba(40,167,69,0.13);
+            transform: translateY(-6px) scale(1.01);
+            z-index: 2;
+          }
+          .service-icon {
+            background: #e0fbe8;
+            color: #28a745;
+            border-radius: 50%;
+            padding: 16px;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .learn-more-btn {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1.6rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(40,167,69,0.10);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+            letter-spacing: 0.5px;
+          }
+          .learn-more-btn:hover {
+            background: #218838;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(40,167,69,0.18);
+            transform: translateY(-2px) scale(1.04);
+          }
+        `}</style>
         <div className="services-flex">
-          {defaultServices.map(service => (
+          {servicesLoading ? (
+    <div>Loading services...</div>
+  ) : servicesError ? (
+    <div style={{ color: 'red' }}>{servicesError}</div>
+  ) : (
+    services.map(service => (
             <div className="service-card" key={service._id}>
-              <div className="service-icon material-symbols-outlined" style={{background:'#e0fbe8',color:'#28a745',borderRadius:'50%',padding:'16px',fontSize:'2.5rem',marginBottom:'1rem',display:'inline-flex',alignItems:'center',justifyContent:'center'}}>{service.materialIcon}</div>
+              <div className="service-icon material-symbols-outlined">{iconMap[service.icon] || service.icon || 'miscellaneous_services'}</div>
               <h3 className="services-card-heading" style={{color:'#222',margin:'0.7rem 0 0.5rem 0',fontWeight:600,fontSize:'1.25rem',textAlign:'center'}}>{service.name}</h3>
               <p className="services-card-desc" style={{color:'#222',fontSize:'1rem',margin:'0 0 0.7rem 0',textAlign:'center'}}>{service.description}</p>
               <div style={{flex:1}} />
@@ -695,7 +740,8 @@ const Home = () => {
                 Learn More
               </button>
             </div>
-          ))}
+          ))
+  )}
         </div>
         {/* CTA Section with heading and subheading */}
         <div style={{

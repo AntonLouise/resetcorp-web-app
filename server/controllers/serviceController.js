@@ -28,13 +28,16 @@ exports.getServiceById = async (req, res) => {
 // @desc Create new service (Admin only)
 exports.createService = async (req, res) => {
   try {
-    const { name, description, features, icon } = req.body;
+    const { name, description, features, icon, whyChoose, ctaText, ctaButtonText } = req.body;
     
     const service = await Service.create({
       name,
       description,
       features: features || [],
-      icon: icon || 'default-icon'
+      icon: icon || 'miscellaneous_services',
+      whyChoose: whyChoose || [],
+      ctaText: ctaText || '',
+      ctaButtonText: ctaButtonText || 'Contact Us'
     });
 
     res.status(201).json(service);
@@ -50,7 +53,7 @@ exports.createService = async (req, res) => {
 // @desc Update service (Admin only)
 exports.updateService = async (req, res) => {
   try {
-    const { name, description, features, icon, isActive } = req.body;
+    const { name, description, features, icon, isActive, whyChoose, ctaText, ctaButtonText } = req.body;
     
     const service = await Service.findById(req.params.id);
     if (!service) {
@@ -62,6 +65,9 @@ exports.updateService = async (req, res) => {
     service.features = features || service.features;
     service.icon = icon || service.icon;
     service.isActive = isActive !== undefined ? isActive : service.isActive;
+    service.whyChoose = whyChoose || service.whyChoose;
+    service.ctaText = ctaText !== undefined ? ctaText : service.ctaText;
+    service.ctaButtonText = ctaButtonText !== undefined ? ctaButtonText : service.ctaButtonText;
 
     const updatedService = await service.save();
     res.json(updatedService);

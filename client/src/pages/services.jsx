@@ -55,7 +55,7 @@ const Services = () => {
         'Grid Integration Services',
         '24/7 Monitoring & Support'
       ],
-      icon: 'solar'
+      icon: 'solar_power'
     },
     {
       _id: '2',
@@ -69,7 +69,7 @@ const Services = () => {
         'On-site Installation Services',
         'Maintenance & Repair'
       ],
-      icon: 'fabrication'
+      icon: 'build'
     },
     {
       _id: '3',
@@ -83,20 +83,20 @@ const Services = () => {
         'Industry Partnerships',
         'Patent Development'
       ],
-      icon: 'research'
+      icon: 'science'
     }
   ];
 
   const getIcon = (iconType) => {
     switch (iconType) {
-      case 'solar':
+      case 'solar_power':
         return <FaSolarPanel />;
-      case 'fabrication':
+      case 'build':
         return <FaCogs />;
-      case 'research':
+      case 'science':
         return <FaFlask />;
       default:
-        return <FaSolarPanel />;
+        return <FaCogs />; // Changed from FaSolarPanel to FaCogs
     }
   };
 
