@@ -366,7 +366,7 @@ const ProductDetail = () => {
                   fontWeight: '700', 
                   color: '#28a745'
                 }}>
-                  ${getCurrentPrice().toFixed(2)}
+                  ₱{getCurrentPrice().toLocaleString()}
                 </span>
                 {getOriginalPrice() && (
                   <span style={{ 
@@ -375,7 +375,7 @@ const ProductDetail = () => {
                     textDecoration: 'line-through',
                     marginLeft: '10px'
                   }}>
-                    ${getOriginalPrice().toFixed(2)}
+                    ₱{getOriginalPrice().toLocaleString()}
                   </span>
                 )}
               </div>

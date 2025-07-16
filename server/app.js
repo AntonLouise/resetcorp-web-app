@@ -56,6 +56,7 @@ const corsOptions = {
       'http://localhost:5173', // Development
       'http://localhost:5174', // Added for Vite dev server
       'http://localhost:3000', // Alternative dev port
+      //IP Address//
       'https://resetcorp.vercel.app', // Production Vercel domain
       process.env.CORS_ORIGIN, // Production frontend URL from environment
     ];

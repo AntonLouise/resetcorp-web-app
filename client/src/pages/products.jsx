@@ -649,7 +649,7 @@ const Product = () => {
                     <img src={getProductImage(product)} alt={product.name} className="product-img" style={{ width: '100%', maxHeight: '150px', objectFit: 'contain', borderRadius: '10px', backgroundColor: '#e2e8f0' }} />
                     <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: '0.5rem 0', color: '#000' }}>{product.name}</h3>
                     <p style={{ color: '#10b981', fontWeight: 'bold', margin: '0.25rem 0' }}>₱{product.price.toLocaleString()}</p>
-                    <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.description || 'No description available.'}</p>
+                    <p style={{ fontSize: '0.875rem', color: '#555' }}>{product.shortDescription || 'No description available.'}</p>
                     <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <button 
                         onClick={() => navigate(`/product/${product._id}`)}
